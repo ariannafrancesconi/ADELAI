@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ADELAI: Alzheimer's Disease Longitudinal study with AI</title>
+<meta name="description" content="ADELAI: studio osservazionale longitudinale sulle demenze con intelligenza artificiale. Pagina del progetto di dottorato di Arianna Francesconi." />
+<script>document.documentElement.classList.add('js');</script>
+<link rel="icon" type="image/png" href="img/logo.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+/* =========================================================================
+   ADELAI: sito del progetto di dottorato
+   Stile: grotesk + monospazio, con sfumature blu e micro-interazioni.
+   File unico, statico, per GitHub Pages.
+   Per aggiornare i DATI: blocco "CONFIG" in fondo, nello <script>.
+   ========================================================================= */
+
+:root{
+  --paper:#f5f3ee; --paper-2:#ece9e1;
+  --ink:#15140f; --ink-2:#4b483f; --ink-3:#8a877c;
+  --line:#d9d5c9; --line-2:#c6c1b2; --track:#e2ded2;
+  --accent:#a8482a; --accent-2:#8f3c22;
+  --blue:#3f5da8; --blue-2:#5a76bf; --blue-soft:#e7ecf8; --blue-wash:#eef1fb;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  --maxw:1160px;
+}
+:root:not([data-theme="light"]){
+  @media (prefers-color-scheme: dark){
+    --paper:#100f0e; --paper-2:#191816; --ink:#eceae2; --ink-2:#a9a599; --ink-3:#77746a;
+    --line:#2a2925; --line-2:#3a3830; --track:#26251f; --accent:#d9835c; --accent-2:#e2966f;
+    --blue:#8ea6e6; --blue-2:#a6b8ee; --blue-soft:#191d2b; --blue-wash:#161a26;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#100f0e; --paper-2:#191816; --ink:#eceae2; --ink-2:#a9a599; --ink-3:#77746a;
+  --line:#2a2925; --line-2:#3a3830; --track:#26251f; --accent:#d9835c; --accent-2:#e2966f;
+  --blue:#8ea6e6; --blue-2:#a6b8ee; --blue-soft:#191d2b; --blue-wash:#161a26;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  background:
+    radial-gradient(130% 55% at 50% -8%, var(--blue-soft), transparent 62%),
+    radial-gradient(90% 40% at 100% 4%, color-mix(in srgb,var(--accent) 9%,transparent), transparent 55%),
+    var(--paper);
+  background-attachment:fixed;
+}
+h1,h2,h3{margin:0;font-weight:600;letter-spacing:-.02em;line-height:1.12}
+p{margin:0}
+a{color:inherit}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 32px}
+.mono{font-family:var(--mono)}
+.tnum{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.mlabel{font-family:var(--mono);font-size:.72rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+
+.js .reveal{opacity:0;transform:translateY(16px);transition:opacity .6s cubic-bezier(.2,.7,.2,1),transform .6s cubic-bezier(.2,.7,.2,1)}
+.js .reveal.in{opacity:1;transform:none}
+.js .stagger > *{opacity:0;transform:translateY(16px);transition:opacity .55s cubic-bezier(.2,.7,.2,1),transform .55s cubic-bezier(.2,.7,.2,1)}
+.js .stagger.in > *{opacity:1;transform:none}
+@media (prefers-reduced-motion: reduce){ .js .reveal,.js .stagger > *{opacity:1!important;transform:none!important;transition:none} }
+
+/* ---------- Header ---------- */
+header.top{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--paper) 82%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line-2)}
+.top-in{display:flex;align-items:center;gap:22px;height:60px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
+.brand img{width:26px;height:26px;object-fit:contain;display:block}
+.brand b{font-family:var(--mono);font-weight:700;font-size:1.02rem;letter-spacing:.14em}
+.top nav{display:flex;gap:2px;margin-left:auto}
+.top nav a{font-family:var(--mono);font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;text-decoration:none;color:var(--ink-2);padding:7px 11px;border-radius:2px;transition:.14s}
+.top nav a:hover{color:var(--blue);background:var(--blue-soft)}
+.tools{display:flex;align-items:center;gap:6px;margin-left:6px}
+.lang{display:flex;border:1px solid var(--line-2)}
+.lang button{border:0;background:transparent;font-family:var(--mono);font-size:.72rem;font-weight:500;padding:5px 9px;cursor:pointer;color:var(--ink-3);transition:.12s}
+.lang button.on{background:var(--ink);color:var(--paper)}
+.tbtn{width:30px;height:28px;display:grid;place-items:center;border:1px solid var(--line-2);background:transparent;cursor:pointer;color:var(--ink-2)}
+.tbtn:hover{color:var(--ink)}
+.tbtn svg{width:15px;height:15px}
+.burger{display:none}
+
+/* ---------- Buttons ---------- */
+.btn{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--mono);font-size:.8rem;font-weight:500;letter-spacing:.02em;text-decoration:none;cursor:pointer;padding:11px 18px;border:1px solid var(--ink);transition:.16s}
+.btn svg{width:14px;height:14px;transition:transform .16s}
+.btn-solid{background:var(--ink);color:var(--paper)}
+.btn-solid:hover{background:var(--blue);border-color:var(--blue)}
+.btn-solid:hover svg{transform:translateX(3px)}
+.btn-line{background:transparent;color:var(--ink)}
+.btn-line:hover{border-color:var(--blue);color:var(--blue)}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;padding:70px 0 12px;overflow:hidden}
+.hero:before{content:"";position:absolute;z-index:-1;width:640px;height:640px;top:-280px;right:-160px;border-radius:50%;
+  background:radial-gradient(circle, color-mix(in srgb,var(--blue) 26%,transparent), transparent 62%);filter:blur(20px);opacity:.7;animation:drift 22s ease-in-out infinite alternate}
+.hero:after{content:"";position:absolute;z-index:-1;width:460px;height:460px;bottom:-240px;left:-120px;border-radius:50%;
+  background:radial-gradient(circle, color-mix(in srgb,var(--accent) 20%,transparent), transparent 60%);filter:blur(20px);opacity:.5;animation:drift 26s ease-in-out infinite alternate-reverse}
+@keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(-40px,30px) scale(1.12)}}
+@media (prefers-reduced-motion: reduce){ .hero:before,.hero:after{animation:none} }
+.hero-grid{display:grid;grid-template-columns:1fr 300px;gap:50px;align-items:center}
+.hero .k{margin-bottom:20px}
+.hero h1{font-size:clamp(2.1rem,4.4vw,3.35rem);font-weight:600;max-width:16ch}
+.hero .full{font-family:var(--mono);font-size:.82rem;color:var(--ink-3);margin-top:18px;letter-spacing:.01em}
+.hero .lede{font-size:1.1rem;color:var(--ink-2);max-width:46ch;margin-top:18px}
+.hero .cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
+.hero-logo{width:min(280px,78%);height:auto;justify-self:center;filter:drop-shadow(0 20px 44px color-mix(in srgb,var(--blue) 34%,transparent));animation:float 7s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@media (prefers-reduced-motion: reduce){ .hero-logo{animation:none} }
+/* keyword chips */
+.hero-tags{display:flex;flex-wrap:wrap;gap:9px;margin-top:38px}
+.chip{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:.76rem;letter-spacing:.01em;padding:7px 13px;border:1px solid var(--line-2);color:var(--ink-2);background:color-mix(in srgb,var(--paper) 55%,transparent);transition:.15s}
+.chip:hover{border-color:var(--blue);color:var(--ink)}
+.chip .k{color:var(--ink-3)}
+.chip .v{color:var(--ink);font-weight:500;margin-left:2px}
+.chip.accent{border-color:transparent;background:var(--accent);color:#fff}
+.chip.accent:hover{color:#fff}
+.chip.accent .dot{width:7px;height:7px;border-radius:50%;background:#fff;animation:pulse 2.2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.8)}}
+.chip.blue{border-color:transparent;background:var(--blue);color:#fff}
+.chip.blue:hover{color:#fff;filter:brightness(1.06)}
+
+/* ---------- Section shell ---------- */
+.sec{border-top:1px solid var(--line-2)}
+.sec-in{display:grid;grid-template-columns:180px 1fr;gap:44px;padding:60px 0}
+.sec-ix .n{font-family:var(--mono);font-size:.8rem;color:var(--accent);font-weight:500}
+.sec-ix .l{display:block;font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);margin-top:8px}
+.sec-body{min-width:0}
+.h-lead{font-size:clamp(1.5rem,2.6vw,2.05rem);font-weight:600;max-width:20ch}
+.p-lead{color:var(--ink-2);font-size:1.06rem;margin-top:16px;max-width:64ch}
+
+/* ---------- 01 · accordion ---------- */
+.acc{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:38px}
+.apanel{border:1px solid var(--line);background:color-mix(in srgb,var(--paper) 55%,transparent);padding:22px;transition:border-color .3s,background .3s,box-shadow .3s;position:relative}
+.apanel:hover{border-color:var(--blue);background:var(--blue-wash);box-shadow:0 10px 30px -18px color-mix(in srgb,var(--blue) 60%,transparent)}
+.ah{display:flex;align-items:center;gap:12px}
+.aic{width:34px;height:34px;flex:0 0 auto;display:grid;place-items:center;border:1px solid var(--line-2);color:var(--blue);transition:.3s}
+.apanel:hover .aic{border-color:var(--blue);background:var(--blue);color:#fff}
+.aic svg{width:17px;height:17px;stroke-width:1.6}
+.ah .mlabel{flex:1}
+.achev{font-family:var(--mono);color:var(--ink-3);font-size:1rem;transition:transform .3s,color .3s}
+.apanel:hover .achev{transform:rotate(45deg);color:var(--blue)}
+.abody{max-height:0;opacity:0;overflow:hidden;transition:max-height .45s cubic-bezier(.2,.7,.2,1),opacity .35s,margin .45s}
+.apanel:hover .abody{max-height:260px;opacity:1;margin-top:16px}
+.abody .pt{font-size:1.05rem;font-weight:600;margin-bottom:8px}
+.abody p{color:var(--ink-2);font-size:.92rem}
+@media (hover:none){ .abody{max-height:none;opacity:1;margin-top:16px} .achev{display:none} }
+
+/* ---------- 02 · objectives ---------- */
+.spec{margin-top:22px}
+.srowo{display:grid;grid-template-columns:64px 210px 1fr;gap:22px;align-items:center;padding:24px 18px 24px 0;border-top:1px solid var(--line);position:relative;transition:padding .3s}
+.srowo:before{content:"";position:absolute;inset:0 -18px;background:linear-gradient(90deg,var(--blue-soft),transparent 85%);transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.2,.7,.2,1);z-index:-1}
+.srowo:hover:before{transform:scaleX(1)}
+.srowo:hover{padding-left:18px}
+.srowo .oi{font-family:var(--mono);color:var(--ink-3);font-size:1.7rem;font-weight:500;transition:color .3s,transform .3s}
+.srowo:hover .oi{color:var(--blue);transform:translateX(2px)}
+.srowo .oh .ot{font-family:var(--mono);font-size:.68rem;letter-spacing:.09em;text-transform:uppercase;color:var(--accent)}
+.srowo .oh h3{font-size:1.08rem;margin-top:7px;font-weight:600}
+.srowo p{color:var(--ink-2);font-size:.94rem}
+
+/* ---------- 03 · methods ---------- */
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:34px}
+.mcard{position:relative;border:1px solid var(--line);background:color-mix(in srgb,var(--paper) 55%,transparent);padding:26px 24px;overflow:hidden;transition:border-color .3s,transform .3s,box-shadow .3s}
+.mcard:before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--blue);transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.2,.7,.2,1)}
+.mcard:hover{border-color:var(--blue-2);transform:translateY(-3px);box-shadow:0 16px 36px -22px color-mix(in srgb,var(--blue) 55%,transparent)}
+.mcard:hover:before{transform:scaleX(1)}
+.mcard .wm{position:absolute;top:14px;right:18px;font-family:var(--mono);font-size:2.4rem;font-weight:700;color:var(--line);letter-spacing:-.04em;transition:color .3s;pointer-events:none}
+.mcard:hover .wm{color:color-mix(in srgb,var(--blue) 26%,transparent)}
+.mcard .mt{font-size:1.08rem;font-weight:600}
+.mcard .msub{font-family:var(--mono);font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin:6px 0 12px}
+.mcard p{color:var(--ink-2);font-size:.93rem;max-width:46ch}
+
+/* figures strip */
+.figs{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line-2);margin-top:6px;background:color-mix(in srgb,var(--paper) 55%,transparent)}
+.fig{padding:20px;border-left:1px solid var(--line);transition:background .3s}
+.fig:first-child{border-left:0}
+.fig:hover{background:var(--blue-soft)}
+.fig .fv{font-family:var(--mono);font-size:1.9rem;font-weight:500;letter-spacing:-.02em}
+.fig:hover .fv{color:var(--blue)}
+.fig .fl{font-family:var(--mono);font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin-top:7px}
+
+/* avanzamento */
+.prog{display:grid;grid-template-columns:1fr 300px;gap:52px;align-items:start}
+.keyfigs{border-top:1px solid var(--line)}
+.kf{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:12px 0;border-bottom:1px solid var(--line)}
+.kf .kfk{font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.kf .kfv{font-family:var(--mono);font-weight:500;font-size:1.02rem}
+.kf .kfv .mut{color:var(--ink-3)}
+.pbar-wrap{margin-bottom:24px}
+.pbar-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.pbar-num{font-family:var(--mono);font-size:2.1rem;font-weight:500;letter-spacing:-.02em}
+.pbar-num .pbar-of{color:var(--ink-3);font-size:1.2rem}
+.pbar-pct{font-family:var(--mono);font-size:1.15rem;color:var(--blue);font-weight:500}
+.pbar{height:12px;background:var(--track);margin-top:12px;overflow:hidden;border-radius:2px}
+.pbar > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--blue-2));transition:width 1.2s cubic-bezier(.2,.7,.2,1)}
+.pbar-cap{font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin-top:9px}
+.kf-note{font-family:var(--mono);font-size:.72rem;color:var(--ink-3);margin-top:14px;line-height:1.55}
+.kf-note:before{content:"↳ ";color:var(--blue)}
+.dtitle{margin:30px 0 12px}
+.dt-h{display:grid;grid-template-columns:1fr 70px 3.5ch 4.5ch;gap:14px;padding:0 0 8px;border-bottom:1px solid var(--line-2)}
+.dt-h span{font-family:var(--mono);font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.dt-h span:nth-child(n+2){text-align:right}
+.drow{display:grid;grid-template-columns:1fr 70px 3.5ch 4.5ch;gap:14px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line);transition:background .2s}
+.drow:hover{background:var(--blue-wash)}
+.drow .dk{font-size:.9rem}
+.drow .dbar{height:6px;background:var(--track)}
+.drow .dbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--blue-2));transition:width .9s cubic-bezier(.2,.7,.2,1)}
+.drow .dn{font-family:var(--mono);font-size:.86rem;text-align:right;font-variant-numeric:tabular-nums}
+.drow .dp{font-family:var(--mono);font-size:.82rem;text-align:right;color:var(--ink-3);font-variant-numeric:tabular-nums}
+
+/* roadmap: timeline verticale statica */
+.road{list-style:none;margin:0;padding:0}
+.road li{position:relative;padding:0 0 24px 24px;border-left:1px solid var(--line-2)}
+.road li:last-child{border-left-color:transparent;padding-bottom:0}
+.road .rdot{position:absolute;left:-5px;top:3px;width:9px;height:9px;border-radius:50%;background:var(--paper);border:1.5px solid var(--ink-3)}
+.road li.done .rdot{background:var(--ink-3);border-color:var(--ink-3)}
+.road li.cur .rdot{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 20%,transparent)}
+.road .ry{font-family:var(--mono);font-size:.74rem;color:var(--ink-3)}
+.road li.cur .ry{color:var(--accent)}
+.road .rt{font-weight:600;font-size:.96rem;margin-top:2px}
+.road .rtag{font-family:var(--mono);font-size:.64rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin-left:9px}
+.road li.cur .rtag{color:var(--accent)}
+.road .rd{color:var(--ink-2);font-size:.88rem;margin-top:3px}
+
+/* team / unità */
+.units{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line-2);margin-top:6px;background:color-mix(in srgb,var(--paper) 55%,transparent)}
+.unit{padding:26px;border-left:1px solid var(--line);transition:background .3s}
+.unit:first-child{border-left:0}
+.unit:hover{background:var(--blue-soft)}
+.unit .ut{font-family:var(--mono);font-size:.68rem;letter-spacing:.09em;text-transform:uppercase;color:var(--accent)}
+.unit h3{font-size:1.02rem;margin:10px 0 10px;font-weight:600;line-height:1.4}
+.unit p{color:var(--ink-2);font-size:.9rem}
+
+/* pubblicazioni */
+.pub{display:grid;grid-template-columns:44px 1fr;gap:22px;padding:18px 0;border-bottom:1px solid var(--line)}
+.pub .pi{font-family:var(--mono);color:var(--ink-3);font-size:.86rem}
+.pub .ptt{font-weight:600}
+.pub .pmm{font-family:var(--mono);font-size:.8rem;color:var(--ink-3);margin-top:4px}
+.pub-empty{border:1px dashed var(--line-2);padding:26px;color:var(--ink-2);font-family:var(--mono);font-size:.86rem;background:var(--blue-wash)}
+.pub-empty:before{content:"// ";color:var(--blue)}
+
+/* collabora */
+.collab{position:relative;background:linear-gradient(135deg,#1b1a16,#26304a);color:var(--paper);padding:52px;overflow:hidden}
+.collab:before{content:"";position:absolute;inset:0;background:radial-gradient(70% 120% at 100% 0%, color-mix(in srgb,var(--blue) 45%,transparent), transparent 55%);opacity:.5;pointer-events:none}
+:root[data-theme="dark"] .collab,:root:not([data-theme="light"]) .collab{background:linear-gradient(135deg,#16151f,#1c2233);border:1px solid var(--line-2)}
+.collab > *{position:relative}
+.collab .ce{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:#e6b8a6}
+.collab h2{color:#fff;font-size:clamp(1.5rem,2.6vw,2rem);margin-top:14px;max-width:22ch;font-weight:600}
+.collab p{margin-top:14px;max-width:56ch;font-size:1rem;color:rgba(255,255,255,.78)}
+.ctags{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.ctags span{font-family:var(--mono);font-size:.74rem;border:1px solid rgba(255,255,255,.22);padding:5px 11px;color:rgba(255,255,255,.82)}
+.collab .cc{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
+.btn-inv{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+.btn-inv:hover{background:var(--blue);color:#fff;border-color:var(--blue)}
+
+/* footer */
+footer{border-top:1px solid var(--line-2);padding:44px 0 60px}
+.foot-cols{display:grid;grid-template-columns:2fr 1fr 1fr;gap:32px}
+.foot-cols b.fw{font-family:var(--mono);font-size:1rem;letter-spacing:.12em;font-weight:700}
+.foot-cols p{font-size:.88rem;color:var(--ink-2);margin-top:12px;max-width:42ch}
+.fcol h4{font-family:var(--mono);font-size:.68rem;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);margin:0 0 12px;font-weight:500}
+.fcol a,.fcol span{display:block;font-size:.88rem;color:var(--ink-2);text-decoration:none;margin-bottom:8px;cursor:pointer}
+.fcol a:hover{color:var(--blue)}
+.colophon{margin-top:38px;padding-top:20px;border-top:1px solid var(--line);font-family:var(--mono);font-size:.74rem;line-height:1.7;color:var(--ink-3)}
+.colophon:before{content:"// ";}
+
+/* ---------- Contact modal ---------- */
+.modal[hidden]{display:none}
+.modal{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:20px}
+.modal-bg{position:absolute;inset:0;background:rgba(10,10,8,.55);backdrop-filter:blur(3px);animation:fade .2s}
+.modal-box{position:relative;width:min(460px,100%);background:var(--paper);border:1px solid var(--line-2);padding:30px;box-shadow:0 30px 80px -20px rgba(0,0,0,.5);animation:pop .22s cubic-bezier(.2,.8,.2,1)}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes pop{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.modal-x{position:absolute;top:12px;right:14px;background:transparent;border:0;font-size:1.4rem;line-height:1;color:var(--ink-3);cursor:pointer}
+.modal-x:hover{color:var(--ink)}
+.modal-box h3{font-size:1.4rem;font-weight:600;margin-top:6px}
+.cm-sub{color:var(--ink-2);font-size:.92rem;margin-top:8px}
+#contactForm{margin-top:20px;display:flex;flex-direction:column;gap:14px}
+#contactForm label{display:flex;flex-direction:column;gap:6px;font-family:var(--mono);font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+#contactForm input,#contactForm textarea{font-family:var(--sans);font-size:.95rem;color:var(--ink);background:color-mix(in srgb,var(--paper-2) 60%,transparent);border:1px solid var(--line-2);padding:10px 12px;border-radius:0;outline:none;transition:border-color .15s}
+#contactForm input:focus,#contactForm textarea:focus{border-color:var(--blue)}
+#contactForm textarea{resize:vertical}
+#contactForm .btn{justify-content:center;margin-top:4px}
+.cm-status{font-family:var(--mono);font-size:.8rem;min-height:1.1em;color:var(--ink-2)}
+.cm-status.ok{color:var(--blue)}
+.cm-status.err{color:var(--accent)}
+
+@media (max-width:920px){
+  .hero-grid{grid-template-columns:1fr;gap:30px}
+  .hero-logo{width:200px;order:-1;justify-self:start}
+  .sec-in{grid-template-columns:1fr;gap:22px;padding:48px 0}
+  .sec-ix{display:flex;gap:12px;align-items:baseline}
+  .sec-ix .l{margin-top:0}
+  .acc{grid-template-columns:1fr}
+  .mgrid{grid-template-columns:1fr}
+  .srowo{grid-template-columns:44px 1fr;gap:14px}
+  .srowo .oh{grid-column:2}
+  .srowo p{grid-column:2}
+  .figs{grid-template-columns:1fr 1fr}
+  .fig:nth-child(3){border-left:0}
+  .fig:nth-child(n+3){border-top:1px solid var(--line)}
+  .prog{grid-template-columns:1fr;gap:34px}
+  .units{grid-template-columns:1fr}
+  .unit{border-left:0;border-top:1px solid var(--line)}
+  .unit:first-child{border-top:0}
+  .foot-cols{grid-template-columns:1fr 1fr}
+  .top nav{display:none}
+  .top nav.open{display:flex;position:absolute;top:60px;left:0;right:0;flex-direction:column;background:var(--paper);border-bottom:1px solid var(--line-2);padding:8px}
+  .burger{display:grid}
+  .collab{padding:34px}
+}
+@media (max-width:560px){
+  .wrap{padding:0 20px}
+  .figs{grid-template-columns:1fr 1fr}
+  .foot-cols{grid-template-columns:1fr}
+  .drow,.dt-h{grid-template-columns:1fr 50px 3ch 4ch;gap:10px}
+}
+</style>
+</head>
+<body>
+
+<!-- ======================= HEADER ======================= -->
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="#top"><img src="img/logo.png" alt="Logo ADELAI" /><b>ADELAI</b></a>
+    <nav id="nav">
+      <a href="#top" data-i18n="nav_home">Home</a>
+      <a href="#studio" data-i18n="nav_study">Lo studio</a>
+      <a href="#obiettivi" data-i18n="nav_obj">Obiettivi</a>
+      <a href="#avanzamento" data-i18n="nav_prog">Avanzamento</a>
+      <a href="#team" data-i18n="nav_team">Team</a>
+      <a href="#collabora" data-i18n="nav_collab">Collabora</a>
+    </nav>
+    <div class="tools">
+      <div class="lang">
+        <button data-lang="it" class="on" onclick="setLang('it')">IT</button>
+        <button data-lang="en" onclick="setLang('en')">EN</button>
+      </div>
+      <button class="tbtn" id="themeBtn" onclick="toggleTheme()" aria-label="Tema">
+        <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l1.5 1.5M17.5 17.5 19 19M19 5l-1.5 1.5M6.5 17.5 5 19"/></svg>
+      </button>
+      <button class="tbtn burger" onclick="document.getElementById('nav').classList.toggle('open')" aria-label="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<span id="top"></span>
+
+<!-- ======================= HERO ======================= -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="reveal">
+        <div class="mlabel k" data-i18n="hero_eyebrow">Studio di ricerca / Progetto di dottorato</div>
+        <h1 data-i18n="hero_title">Leggere le demenze nel linguaggio e nel movimento, con l'IA.</h1>
+        <div class="full" data-i18n="hero_full">ADELAI: Alzheimer's Disease Longitudinal study with Artificial Intelligence</div>
+        <p class="lede" data-i18n="hero_sub">Studio osservazionale longitudinale che raccoglie dati clinici non invasivi per sviluppare algoritmi di IA capaci di distinguere l'Alzheimer dalle altre forme di demenza e di prevederne il decorso.</p>
+        <div class="cta">
+          <a class="btn btn-solid" href="#studio"><span data-i18n="hero_cta1">Scopri lo studio</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a class="btn btn-line" href="#collabora" data-i18n="hero_cta2">Collabora</a>
+        </div>
+      </div>
+      <img class="hero-logo reveal" src="img/logo.png" alt="Logo dello studio ADELAI: un cervello stilizzato con connessioni neurali" />
+    </div>
+    <div class="hero-tags reveal">
+      <span class="chip accent"><span class="dot"></span><span data-i18n="chip_status">Reclutamento in corso</span></span>
+      <span class="chip blue" data-i18n="chip_core">Alzheimer vs altre demenze</span>
+      <span class="chip" data-i18n="chip_np">No-profit · osservazionale</span>
+      <span class="chip" data-i18n="chip_design">Prospettico · longitudinale</span>
+      <span class="chip" data-i18n="chip_mono">Monocentrico</span>
+      <span class="chip"><span class="k" data-i18n="chip_sample">Campione</span><span class="v tnum" id="chipSample">…/150</span></span>
+      <span class="chip"><span class="k" data-i18n="chip_revis">Riacquisizioni</span><span class="v tnum" id="chipRevis">…</span></span>
+      <span class="chip mono">2025–2029</span>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 01 · LO STUDIO ======================= -->
+<section class="sec" id="studio">
+  <div class="wrap sec-in">
+    <div class="sec-ix reveal"><span class="n">01</span><span class="l" data-i18n="ix_study">Lo studio</span></div>
+    <div class="sec-body">
+      <h2 class="h-lead reveal" data-i18n="study_title">Perché ADELAI</h2>
+      <p class="p-lead reveal" data-i18n="study_lead">Distinguere l'Alzheimer dalle altre forme di demenza, e prevederne il decorso, richiede tempo ed esperienza clinica. L'IA può cogliere nel linguaggio e nel comportamento segnali utili, ma mancano dataset pubblici in italiano: ADELAI nasce per colmare questa lacuna.</p>
+      <div class="acc stagger">
+        <div class="apanel">
+          <div class="ah">
+            <span class="aic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span>
+            <span class="mlabel" data-i18n="study_c1_tag">Il problema</span><span class="achev">+</span>
+          </div>
+          <div class="abody"><div class="pt" data-i18n="study_c1_t">Segnali sottili, diagnosi complessa</div>
+            <p data-i18n="study_c1_p">Alzheimer e altre demenze lasciano tracce sottili nel modo di parlare, scrivere e digitare. Distinguerle e anticiparne l'evoluzione è difficile ma decisivo per la cura.</p></div>
+        </div>
+        <div class="apanel">
+          <div class="ah">
+            <span class="aic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12c3-4 6-4 9 0s6 4 9 0"/><path d="M3 17c3-4 6-4 9 0s6 4 9 0"/></svg></span>
+            <span class="mlabel" data-i18n="study_c2_tag">L'approccio</span><span class="achev">+</span>
+          </div>
+          <div class="abody"><div class="pt" data-i18n="study_c2_t">Dati non invasivi</div>
+            <p data-i18n="study_c2_p">Durante le normali visite neurologiche raccogliamo risposte orali e scritte a domande strutturate e test neuropsicologici: nessun dispositivo indossabile, nessuna procedura aggiuntiva per il paziente.</p></div>
+        </div>
+        <div class="apanel">
+          <div class="ah">
+            <span class="aic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1"/></svg></span>
+            <span class="mlabel" data-i18n="study_c3_tag">L'obiettivo</span><span class="achev">+</span>
+          </div>
+          <div class="abody"><div class="pt" data-i18n="study_c3_t">Dataset e algoritmi di IA</div>
+            <p data-i18n="study_c3_p">Costruiamo una base di dati strutturata in italiano e sviluppiamo modelli di machine learning e deep learning per la diagnosi differenziale e la predizione del decorso, a fini di ricerca.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 02 · OBIETTIVI ======================= -->
+<section class="sec" id="obiettivi">
+  <div class="wrap sec-in">
+    <div class="sec-ix reveal"><span class="n">02</span><span class="l" data-i18n="ix_obj">Obiettivi</span></div>
+    <div class="sec-body">
+      <h2 class="h-lead reveal" data-i18n="obj_title">Cosa vogliamo scoprire</h2>
+      <div class="spec stagger">
+        <div class="srowo"><div class="oi">01</div>
+          <div class="oh"><div class="ot" data-i18n="obj_1_tag">Endpoint primario</div><h3 data-i18n="obj_1_t">Raccolta dati non invasiva</h3></div>
+          <p data-i18n="obj_1_p">Raccogliere dati clinici durante la visita neurologica ambulatoriale, in modo non invasivo e integrato nella pratica clinica.</p>
+        </div>
+        <div class="srowo"><div class="oi">02</div>
+          <div class="oh"><div class="ot" data-i18n="obj_2_tag">Diagnosi differenziale</div><h3 data-i18n="obj_2_t">Distinguere l'Alzheimer con l'IA</h3></div>
+          <p data-i18n="obj_2_p">Sviluppare algoritmi di IA capaci di distinguere l'Alzheimer dalle altre forme di demenza e declino cognitivo, a partire dai dati linguistici e comportamentali raccolti.</p>
+        </div>
+        <div class="srowo"><div class="oi">03</div>
+          <div class="oh"><div class="ot" data-i18n="obj_3_tag">Obiettivo prognostico</div><h3 data-i18n="obj_3_t">Predire il decorso della malattia</h3></div>
+          <p data-i18n="obj_3_p">Sfruttare la componente longitudinale, cioè gli stessi pazienti riacquisiti a distanza di tempo, per costruire modelli che prevedano l'evoluzione della malattia.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 03 · DISEGNO & METODI ======================= -->
+<section class="sec" id="metodi">
+  <div class="wrap sec-in">
+    <div class="sec-ix reveal"><span class="n">03</span><span class="l" data-i18n="ix_des">Disegno &amp; metodi</span></div>
+    <div class="sec-body">
+      <h2 class="h-lead reveal" data-i18n="des_title">Come è costruito lo studio</h2>
+      <p class="p-lead reveal" data-i18n="des_lead">Studio osservazionale prospettico, longitudinale e monocentrico, condotto presso l'ambulatorio di Neurologia della Fondazione Policlinico Universitario Campus Bio-Medico di Roma.</p>
+
+      <div class="figs reveal" id="figs">
+        <div class="fig"><div class="fv"><span class="count" data-to="150">0</span></div><div class="fl" data-i18n="des_s1">pazienti previsti</div></div>
+        <div class="fig"><div class="fv tnum"><span class="count" id="figCollected" data-to="0">0</span></div><div class="fl" data-i18n="des_s2">raccolti ad oggi</div></div>
+        <div class="fig"><div class="fv tnum"><span class="count" id="figClasses" data-to="0">0</span></div><div class="fl" data-i18n="des_s3">classi diagnostiche</div></div>
+        <div class="fig"><div class="fv">18+</div><div class="fl" data-i18n="des_s4">età partecipanti</div></div>
+      </div>
+
+      <div class="mgrid stagger">
+        <div class="mcard"><span class="wm">01</span><div class="mt" data-i18n="des_pop_t">Popolazione</div><div class="msub">POP</div><p data-i18n="des_pop_p">Circa 150 pazienti adulti che afferiscono all'ambulatorio con un quadro di declino cognitivo. Concepito inizialmente come confronto Alzheimer vs MCI, lo studio si è evoluto in un confronto tra Alzheimer e le altre forme di demenza, data la limitata numerosità dei casi MCI. Esclusi: patologie della voce o disturbi ortopedici che impediscano la risposta orale o scritta.</p></div>
+        <div class="mcard"><span class="wm">02</span><div class="mt" data-i18n="des_data_t">Dati raccolti</div><div class="msub">DATA</div><p data-i18n="des_data_p">Risposte orali e scritte a domande strutturate, dinamiche di digitazione (tempi di battitura su touchscreen), registrazioni audio, anamnesi e test neuropsicologici (MMSE, MoCA). Ogni paziente è identificato solo da un codice alfanumerico.</p></div>
+        <div class="mcard"><span class="wm">03</span><div class="mt" data-i18n="des_meth_t">Metodi computazionali</div><div class="msub">METHODS</div><p data-i18n="des_meth_p">Machine learning, deep learning (LSTM, GRU, Transformer, CNN) e foundation models, con validazione Leave-One-User-Out. Modelli a finalità esclusivamente di ricerca, senza azione clinica diretta sul paziente.</p></div>
+        <div class="mcard"><span class="wm">04</span><div class="mt" data-i18n="des_priv_t">Privacy &amp; etica</div><div class="msub">ETHICS</div><p data-i18n="des_priv_p">Studio condotto secondo la Dichiarazione di Helsinki e le norme di buona pratica clinica. Dati anonimizzati, conservati in sicurezza e trattati in conformità al GDPR; nessun dato inviato o elaborato su server esterni.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 04 · AVANZAMENTO ======================= -->
+<section class="sec" id="avanzamento">
+  <div class="wrap sec-in">
+    <div class="sec-ix reveal"><span class="n">04</span><span class="l" data-i18n="ix_prog">Avanzamento</span></div>
+    <div class="sec-body">
+      <h2 class="h-lead reveal" data-i18n="prog_title">A che punto siamo</h2>
+      <p class="p-lead reveal" data-i18n="prog_lead">Aggiorniamo periodicamente la raccolta dati e le tappe dello studio, per raccontare quasi in tempo reale il lavoro in corso.</p>
+      <div class="prog reveal" id="prog" style="margin-top:32px">
+        <div>
+          <div class="pbar-wrap">
+            <div class="pbar-top">
+              <div class="pbar-num"><span class="count" id="pTotal" data-to="0">0</span> <span class="pbar-of">/ <span id="pTarget">150</span></span></div>
+              <div class="pbar-pct"><span class="count" id="pPct" data-to="0">0</span>%</div>
+            </div>
+            <div class="pbar"><i id="pbarFill"></i></div>
+            <div class="pbar-cap" data-i18n="kf_collected">Pazienti raccolti</div>
+          </div>
+          <div class="keyfigs">
+            <div class="kf"><span class="kfk" data-i18n="kf_revis">Pazienti riacquisiti a 6 mesi</span><span class="kfv" id="kfRevis">…</span></div>
+            <div class="kf"><span class="kfk" data-i18n="kf_updated">Ultimo aggiornamento</span><span class="kfv" id="kfDate">…</span></div>
+          </div>
+          <div class="kf-note" data-i18n="kf_revis_note">pazienti registrati una seconda volta a ~6 mesi di distanza, per la componente longitudinale dello studio.</div>
+          <div class="dtitle mlabel" data-i18n="prog_dist_title">Distribuzione per classe diagnostica</div>
+          <div class="dt-h"><span data-i18n="dh_class">Classe</span><span></span><span>n</span><span data-i18n="dh_share">quota</span></div>
+          <div id="distRows"></div>
+        </div>
+        <div>
+          <div class="mlabel" style="margin-bottom:16px" data-i18n="road_title">Roadmap</div>
+          <ol class="road" id="roadmap"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 05 · TEAM ======================= -->
+<section class="sec" id="team">
+  <div class="wrap sec-in">
+    <div class="sec-ix reveal"><span class="n">05</span><span class="l" data-i18n="ix_team">Team</span></div>
+    <div class="sec-body">
+      <h2 class="h-lead reveal" data-i18n="team_title">Chi c'è dietro ADELAI</h2>
+      <p class="p-lead reveal" data-i18n="team_lead">ADELAI nasce dalla collaborazione tra due unità di ricerca del Campus Bio-Medico di Roma: la parte clinica e la parte di intelligenza artificiale.</p>
+      <div class="units reveal" id="units"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 06 · PUBBLICAZIONI ======================= -->
+<section class="sec" id="pubblicazioni">
+  <div class="wrap sec-in">
+    <div class="sec-ix reveal"><span class="n">06</span><span class="l" data-i18n="ix_pub">Output</span></div>
+    <div class="sec-body">
+      <h2 class="h-lead reveal" data-i18n="pub_title">Pubblicazioni &amp; risultati</h2>
+      <p class="p-lead reveal" data-i18n="pub_lead">I risultati dello studio saranno condivisi con la comunità scientifica tramite pubblicazioni e convegni. Questa sezione verrà aggiornata man mano che escono nuovi lavori.</p>
+      <div id="pubList" class="reveal" style="margin-top:26px"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 07 · COLLABORA ======================= -->
+<section class="sec" id="collabora">
+  <div class="wrap sec-in">
+    <div class="sec-ix reveal"><span class="n">07</span><span class="l" data-i18n="ix_collab">Collabora</span></div>
+    <div class="sec-body">
+      <div class="collab reveal">
+        <div class="ce" data-i18n="collab_eyebrow">Collaborazioni / partner</div>
+        <h2 data-i18n="collab_title">Costruiamo qualcosa insieme</h2>
+        <p data-i18n="collab_p">Cerchiamo collaborazioni scientifiche e cliniche per estendere e valorizzare lo studio. Se lavori su demenze, neurologia, NLP o IA per la salute, parliamone.</p>
+        <div class="ctags">
+          <span data-i18n="collab_t1">Centri clinici</span>
+          <span data-i18n="collab_t2">Ricerca in IA / NLP</span>
+          <span data-i18n="collab_t3">Collaborazioni accademiche</span>
+          <span data-i18n="collab_t4">Studenti &amp; tesisti</span>
+        </div>
+        <div class="cc">
+          <button class="btn btn-inv" type="button" onclick="openContact()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14"/><path d="m3 7 9 6 9-6"/></svg>
+            <span data-i18n="collab_cta">Scrivimi</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= FOOTER ======================= -->
+<footer>
+  <div class="wrap">
+    <div class="foot-cols">
+      <div>
+        <b class="fw">ADELAI</b>
+        <p data-i18n="foot_about">Alzheimer's Disease Longitudinal study with Artificial Intelligence: studio osservazionale no-profit sulle demenze e il declino cognitivo.</p>
+      </div>
+      <div class="fcol">
+        <h4 data-i18n="foot_nav">Naviga</h4>
+        <a href="#studio" data-i18n="nav_study">Lo studio</a>
+        <a href="#obiettivi" data-i18n="nav_obj">Obiettivi</a>
+        <a href="#avanzamento" data-i18n="nav_prog">Avanzamento</a>
+        <a href="#team" data-i18n="nav_team">Team</a>
+      </div>
+      <div class="fcol">
+        <h4 data-i18n="foot_contact">Contatti</h4>
+        <a onclick="openContact()" data-i18n="foot_write">Scrivici →</a>
+        <span data-i18n="foot_place">Roma, Italia</span>
+        <span data-i18n="foot_promoter">Promotore: Fondazione Policlinico Univ. Campus Bio-Medico</span>
+      </div>
+    </div>
+    <div class="colophon" data-i18n="colophon"></div>
+  </div>
+</footer>
+
+<!-- ======================= CONTACT MODAL ======================= -->
+<div class="modal" id="contactModal" hidden>
+  <div class="modal-bg" onclick="closeContact()"></div>
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="cmTitle">
+    <button class="modal-x" type="button" onclick="closeContact()" aria-label="Chiudi">×</button>
+    <div class="mlabel" data-i18n="cm_eyebrow">Contatto</div>
+    <h3 id="cmTitle" data-i18n="cm_title">Scrivici</h3>
+    <p class="cm-sub" data-i18n="cm_sub">Raccontaci in due righe chi sei e cosa proponi. Ti risponderemo via email.</p>
+    <form id="contactForm">
+      <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true" />
+      <label><span data-i18n="cm_name">Nome</span><input name="name" required /></label>
+      <label><span data-i18n="cm_email">La tua email</span><input type="email" name="email" required /></label>
+      <label><span data-i18n="cm_msg">Messaggio</span><textarea name="message" rows="4" required></textarea></label>
+      <input type="hidden" name="_subject" value="Nuovo contatto dal sito ADELAI" />
+      <button type="submit" class="btn btn-solid" data-i18n="cm_send">Invia</button>
+      <div class="cm-status" id="cmStatus"></div>
+    </form>
+  </div>
+</div>
+
+<script>
+/* =========================================================================
+   ⬇️⬇️⬇️  CONFIG: L'UNICO BLOCCO DA MODIFICARE PER AGGIORNARE I DATI
+   ========================================================================= */
+const CONFIG = {
+  lastUpdated: "2026-08-28",          // AAAA-MM-GG
+  target: 150,
+  revisits: 5,                        // pazienti riacquisiti a ~6 mesi
+
+  // Endpoint del modulo di contatto (Formspree o simili).
+  formEndpoint: "https://formspree.io/f/mrpgjrnv",
+
+  // Distribuzione per classe diagnostica: aggiorna gli "n"
+  classes: [
+    { key:"AD",   n:46, it:"Alzheimer (AD)",          en:"Alzheimer's (AD)" },
+    { key:"Mix",  n:9,  it:"Demenza mista",            en:"Mixed dementia" },
+    { key:"FTD",  n:6,  it:"Frontotemporale (FTD)",    en:"Frontotemporal (FTD)" },
+    { key:"VaD",  n:4,  it:"Vascolare (VaD)",          en:"Vascular (VaD)" },
+    { key:"SCD",  n:4,  it:"Declino soggettivo (SCD)", en:"Subjective decline (SCD)" },
+    { key:"DLB",  n:2,  it:"Corpi di Lewy (DLB)",      en:"Lewy bodies (DLB)" },
+    { key:"PPA",  n:2,  it:"Afasia progressiva (PPA)", en:"Primary prog. aphasia (PPA)" },
+    { key:"LATE", n:1,  it:"LATE",                      en:"LATE" },
+  ],
+
+  // Roadmap. status: "done" | "current" | "upcoming"
+  timeline: [
+    { year:"2025", status:"done",
+      it:{ t:"Avvio dello studio", d:"Approvazione del protocollo e inizio del reclutamento." },
+      en:{ t:"Study kick-off", d:"Protocol approval and start of recruitment." } },
+    { year:"2025–2027", status:"current",
+      it:{ t:"Reclutamento e raccolta dati", d:"Arruolamento e raccolta dati non invasivi, per tutto il 2027." },
+      en:{ t:"Recruitment & data collection", d:"Enrollment and non-invasive data collection, through end of 2027." } },
+    { year:"2027–2028", status:"upcoming",
+      it:{ t:"Follow-up e sviluppo algoritmi", d:"Visite di follow-up e sviluppo dei modelli di IA." },
+      en:{ t:"Follow-up & model development", d:"Follow-up visits and AI model development." } },
+    { year:"2028–2029", status:"upcoming",
+      it:{ t:"Analisi finale e pubblicazione", d:"Valutazione dei modelli, report finale e risultati." },
+      en:{ t:"Final analysis & publication", d:"Model evaluation, final report and results." } },
+  ],
+
+  publications: [
+    // { authors:"Francesconi A., et al.", year:"2026", title:"Titolo", venue:"Rivista/convegno", url:"https://..." },
+  ],
+
+  units: [
+    { kind:"clinic",
+      it:{ name:"Unità Operativa di Neurologia, Fondazione Policlinico Universitario Campus Bio-Medico",
+           role:"Reclutamento dei pazienti, valutazione clinica e raccolta dei dati in ambulatorio." },
+      en:{ name:"Neurology Unit, Fondazione Policlinico Universitario Campus Bio-Medico",
+           role:"Patient recruitment, clinical assessment and data collection at the clinic." } },
+    { kind:"ai",
+      it:{ name:"Unità di Intelligenza Artificiale e Sistemi di Elaborazione, Dipartimento di Ingegneria, Università Campus Bio-Medico di Roma",
+           role:"Analisi dei dati e sviluppo dei modelli di intelligenza artificiale." },
+      en:{ name:"Unit of Artificial Intelligence and Computer Systems, Department of Engineering, University Campus Bio-Medico of Rome",
+           role:"Data analysis and development of the artificial-intelligence models." } },
+  ],
+};
+/* =========================================================================
+   ⬆️⬆️⬆️  FINE BLOCCO DA MODIFICARE
+   ========================================================================= */
+
+const STR = {
+  it:{
+    nav_home:"Home", nav_study:"Lo studio", nav_obj:"Obiettivi", nav_prog:"Avanzamento", nav_team:"Team", nav_collab:"Collabora",
+    ix_study:"Lo studio", ix_obj:"Obiettivi", ix_des:"Disegno & metodi", ix_prog:"Avanzamento", ix_team:"Team", ix_pub:"Output", ix_collab:"Collabora",
+    hero_eyebrow:"Studio di ricerca / Progetto di dottorato",
+    hero_title:"Leggere le demenze nel linguaggio e nel movimento, con l'IA.",
+    hero_full:"ADELAI: Alzheimer's Disease Longitudinal study with Artificial Intelligence",
+    hero_sub:"Studio osservazionale longitudinale che raccoglie dati clinici non invasivi per sviluppare algoritmi di IA capaci di distinguere l'Alzheimer dalle altre forme di demenza e di prevederne il decorso.",
+    hero_cta1:"Scopri lo studio", hero_cta2:"Collabora",
+    chip_status:"Reclutamento in corso", chip_core:"Alzheimer vs altre demenze", chip_np:"No-profit · osservazionale",
+    chip_design:"Prospettico · longitudinale", chip_mono:"Monocentrico", chip_sample:"Campione", chip_revis:"Riacquisiti a 6 mesi",
+    study_title:"Perché ADELAI",
+    study_lead:"Distinguere l'Alzheimer dalle altre forme di demenza, e prevederne il decorso, richiede tempo ed esperienza clinica. L'IA può cogliere nel linguaggio e nel comportamento segnali utili, ma mancano dataset pubblici in italiano: ADELAI nasce per colmare questa lacuna.",
+    study_c1_tag:"Il problema", study_c1_t:"Segnali sottili, diagnosi complessa",
+    study_c1_p:"Alzheimer e altre demenze lasciano tracce sottili nel modo di parlare, scrivere e digitare. Distinguerle e anticiparne l'evoluzione è difficile ma decisivo per la cura.",
+    study_c2_tag:"L'approccio", study_c2_t:"Dati non invasivi",
+    study_c2_p:"Durante le normali visite neurologiche raccogliamo risposte orali e scritte a domande strutturate e test neuropsicologici: nessun dispositivo indossabile, nessuna procedura aggiuntiva per il paziente.",
+    study_c3_tag:"L'obiettivo", study_c3_t:"Dataset e algoritmi di IA",
+    study_c3_p:"Costruiamo una base di dati strutturata in italiano e sviluppiamo modelli di machine learning e deep learning per la diagnosi differenziale e la predizione del decorso, a fini di ricerca.",
+    obj_title:"Cosa vogliamo scoprire",
+    obj_1_tag:"Endpoint primario", obj_1_t:"Raccolta dati non invasiva",
+    obj_1_p:"Raccogliere dati clinici durante la visita neurologica ambulatoriale, in modo non invasivo e integrato nella pratica clinica.",
+    obj_2_tag:"Diagnosi differenziale", obj_2_t:"Distinguere l'Alzheimer con l'IA",
+    obj_2_p:"Sviluppare algoritmi di IA capaci di distinguere l'Alzheimer dalle altre forme di demenza e declino cognitivo, a partire dai dati linguistici e comportamentali raccolti.",
+    obj_3_tag:"Obiettivo prognostico", obj_3_t:"Predire il decorso della malattia",
+    obj_3_p:"Sfruttare la componente longitudinale, cioè gli stessi pazienti riacquisiti a distanza di tempo, per costruire modelli che prevedano l'evoluzione della malattia.",
+    des_title:"Come è costruito lo studio",
+    des_lead:"Studio osservazionale prospettico, longitudinale e monocentrico, condotto presso l'ambulatorio di Neurologia della Fondazione Policlinico Universitario Campus Bio-Medico di Roma.",
+    des_s1:"pazienti previsti", des_s2:"raccolti ad oggi", des_s3:"classi diagnostiche", des_s4:"età partecipanti",
+    des_pop_t:"Popolazione",
+    des_pop_p:"Circa 150 pazienti adulti che afferiscono all'ambulatorio con un quadro di declino cognitivo. Concepito inizialmente come confronto Alzheimer vs MCI, lo studio si è evoluto in un confronto tra Alzheimer e le altre forme di demenza, data la limitata numerosità dei casi MCI. Esclusi: patologie della voce o disturbi ortopedici che impediscano la risposta orale o scritta.",
+    des_data_t:"Dati raccolti",
+    des_data_p:"Risposte orali e scritte a domande strutturate, dinamiche di digitazione (tempi di battitura su touchscreen), registrazioni audio, anamnesi e test neuropsicologici (MMSE, MoCA). Ogni paziente è identificato solo da un codice alfanumerico.",
+    des_meth_t:"Metodi computazionali",
+    des_meth_p:"Machine learning, deep learning (LSTM, GRU, Transformer, CNN) e foundation models, con validazione Leave-One-User-Out. Modelli a finalità esclusivamente di ricerca, senza azione clinica diretta sul paziente.",
+    des_priv_t:"Privacy & etica",
+    des_priv_p:"Studio condotto secondo la Dichiarazione di Helsinki e le norme di buona pratica clinica. Dati anonimizzati, conservati in sicurezza e trattati in conformità al GDPR; nessun dato inviato o elaborato su server esterni.",
+    prog_title:"A che punto siamo",
+    prog_lead:"Aggiorniamo periodicamente la raccolta dati e le tappe dello studio, per raccontare quasi in tempo reale il lavoro in corso.",
+    kf_collected:"Pazienti raccolti", kf_pct:"Completamento", kf_revis:"Pazienti riacquisiti a 6 mesi", kf_updated:"Ultimo aggiornamento",
+    kf_revis_note:"pazienti registrati una seconda volta a ~6 mesi di distanza, per la componente longitudinale dello studio.",
+    prog_dist_title:"Distribuzione per classe diagnostica", dh_class:"Classe", dh_share:"quota", road_title:"Roadmap",
+    team_title:"Chi c'è dietro ADELAI",
+    team_lead:"ADELAI nasce dalla collaborazione tra due unità di ricerca del Campus Bio-Medico di Roma: la parte clinica e la parte di intelligenza artificiale.",
+    unit_clinic_tag:"Partner clinico", unit_ai_tag:"Partner IA",
+    pub_title:"Pubblicazioni & risultati",
+    pub_lead:"I risultati dello studio saranno condivisi con la comunità scientifica tramite pubblicazioni e convegni. Questa sezione verrà aggiornata man mano che escono nuovi lavori.",
+    pub_empty:"I primi lavori dello studio saranno condivisi qui non appena disponibili.",
+    collab_eyebrow:"Collaborazioni / partner", collab_title:"Costruiamo qualcosa insieme",
+    collab_p:"Cerchiamo collaborazioni scientifiche e cliniche per estendere e valorizzare lo studio. Se lavori su demenze, neurologia, NLP o IA per la salute, parliamone.",
+    collab_t1:"Centri clinici", collab_t2:"Ricerca in IA / NLP", collab_t3:"Collaborazioni accademiche", collab_t4:"Studenti & tesisti",
+    collab_cta:"Scrivimi",
+    foot_about:"Alzheimer's Disease Longitudinal study with Artificial Intelligence: studio osservazionale no-profit sulle demenze e il declino cognitivo.",
+    foot_nav:"Naviga", foot_contact:"Contatti", foot_write:"Scrivici →", foot_place:"Roma, Italia",
+    foot_promoter:"Promotore: Fondazione Policlinico Univ. Campus Bio-Medico",
+    colophon:"Pagina divulgativa del progetto di dottorato di Arianna Francesconi. Non è un sito ufficiale del Policlinico Campus Bio-Medico. Nessun dato personale dei pazienti; numeri di avanzamento aggregati. © YEAR",
+    road_done:"completata", road_current:"in corso",
+    cm_eyebrow:"Contatto", cm_title:"Scrivici", cm_sub:"Raccontaci in due righe chi sei e cosa proponi. Ti risponderemo via email.",
+    cm_name:"Nome", cm_email:"La tua email", cm_msg:"Messaggio", cm_send:"Invia",
+    cm_sending:"Invio…", cm_ok:"Grazie! Ti risponderemo presto.", cm_err:"Qualcosa è andato storto. Riprova tra poco.",
+    cm_unset:"Modulo non ancora attivo (configura l'endpoint, vedi LEGGIMI).",
+  },
+  en:{
+    nav_home:"Home", nav_study:"The study", nav_obj:"Objectives", nav_prog:"Progress", nav_team:"Team", nav_collab:"Collaborate",
+    ix_study:"The study", ix_obj:"Objectives", ix_des:"Design & methods", ix_prog:"Progress", ix_team:"Team", ix_pub:"Output", ix_collab:"Collaborate",
+    hero_eyebrow:"Research study / PhD project",
+    hero_title:"Reading dementias in language and movement, with AI.",
+    hero_full:"ADELAI: Alzheimer's Disease Longitudinal study with Artificial Intelligence",
+    hero_sub:"A longitudinal observational study collecting non-invasive clinical data to develop AI algorithms that tell Alzheimer's apart from other forms of dementia and predict its course.",
+    hero_cta1:"Explore the study", hero_cta2:"Collaborate",
+    chip_status:"Recruiting", chip_core:"Alzheimer's vs other dementias", chip_np:"Non-profit · observational",
+    chip_design:"Prospective · longitudinal", chip_mono:"Single-center", chip_sample:"Sample", chip_revis:"Re-acquired at 6 mo",
+    study_title:"Why ADELAI",
+    study_lead:"Telling Alzheimer's apart from other dementias, and predicting its course, takes time and clinical experience. AI can pick up useful signals in language and behavior, but public datasets in Italian are still lacking, so ADELAI was created to fill this gap.",
+    study_c1_tag:"The problem", study_c1_t:"Subtle signals, complex diagnosis",
+    study_c1_p:"Alzheimer's and other dementias leave subtle traces in how people speak, write and type. Telling them apart and anticipating their course is hard but decisive for care.",
+    study_c2_tag:"The approach", study_c2_t:"Non-invasive data",
+    study_c2_p:"During routine neurological visits we collect oral and written responses to structured questions and neuropsychological tests: no wearable devices, no extra procedures for the patient.",
+    study_c3_tag:"The goal", study_c3_t:"A dataset and AI algorithms",
+    study_c3_p:"We build a structured Italian-language dataset and develop machine learning and deep learning models for differential diagnosis and course prediction, for research purposes.",
+    obj_title:"What we want to find out",
+    obj_1_tag:"Primary endpoint", obj_1_t:"Non-invasive data collection",
+    obj_1_p:"Collect clinical data during outpatient neurological visits, non-invasively and integrated into clinical practice.",
+    obj_2_tag:"Differential diagnosis", obj_2_t:"Telling Alzheimer's apart with AI",
+    obj_2_p:"Develop AI algorithms that distinguish Alzheimer's from other forms of dementia and cognitive decline, based on the collected linguistic and behavioral data.",
+    obj_3_tag:"Prognostic objective", obj_3_t:"Predicting disease course",
+    obj_3_p:"Leverage the longitudinal component, the same patients re-acquired over time, to build models that predict how the disease evolves.",
+    des_title:"How the study is built",
+    des_lead:"A prospective, longitudinal, single-center observational study, carried out at the Neurology outpatient clinic of Fondazione Policlinico Universitario Campus Bio-Medico in Rome.",
+    des_s1:"planned patients", des_s2:"collected so far", des_s3:"diagnostic classes", des_s4:"participant age",
+    des_pop_t:"Population",
+    des_pop_p:"About 150 adult patients attending the clinic with cognitive decline. Initially conceived as Alzheimer's vs MCI, the study evolved into a comparison between Alzheimer's and other forms of dementia, given the small number of MCI cases. Excluded: voice disorders or orthopedic conditions preventing oral or written responses.",
+    des_data_t:"Data collected",
+    des_data_p:"Oral and written responses to structured questions, typing dynamics (keystroke timings on touchscreen), audio recordings, medical history and neuropsychological tests (MMSE, MoCA). Each patient is identified only by an alphanumeric code.",
+    des_meth_t:"Computational methods",
+    des_meth_p:"Machine learning, deep learning (LSTM, GRU, Transformers, CNN) and foundation models, with Leave-One-User-Out validation. Models are strictly for research, with no direct clinical action on patients.",
+    des_priv_t:"Privacy & ethics",
+    des_priv_p:"Conducted according to the Declaration of Helsinki and good clinical practice. Data are anonymized, securely stored and processed in compliance with GDPR; no data is sent to or processed on external servers.",
+    prog_title:"Where we are",
+    prog_lead:"We periodically update data collection and study milestones, to show the work in progress in near real time.",
+    kf_collected:"Patients collected", kf_pct:"Completion", kf_revis:"Patients re-acquired at 6 months", kf_updated:"Last updated",
+    kf_revis_note:"patients recorded a second time ~6 months apart, for the study's longitudinal component.",
+    prog_dist_title:"Breakdown by diagnostic class", dh_class:"Class", dh_share:"share", road_title:"Roadmap",
+    team_title:"The people behind ADELAI",
+    team_lead:"ADELAI is a collaboration between two research units at Campus Bio-Medico di Roma: the clinical side and the artificial-intelligence side.",
+    unit_clinic_tag:"Clinical partner", unit_ai_tag:"AI partner",
+    pub_title:"Publications & results",
+    pub_lead:"The study's results will be shared with the scientific community through publications and conferences. This section will be updated as new work is released.",
+    pub_empty:"The study's first papers will be shared here as soon as they are available.",
+    collab_eyebrow:"Collaborations / partners", collab_title:"Let's build something together",
+    collab_p:"We are looking for scientific and clinical collaborations to extend and strengthen the study. If you work on dementias, neurology, NLP or AI for health, let's talk.",
+    collab_t1:"Clinical centers", collab_t2:"AI / NLP research", collab_t3:"Academic collaborations", collab_t4:"Students & theses",
+    collab_cta:"Get in touch",
+    foot_about:"Alzheimer's Disease Longitudinal study with Artificial Intelligence: a non-profit observational study on dementias and cognitive decline.",
+    foot_nav:"Navigate", foot_contact:"Contact", foot_write:"Get in touch →", foot_place:"Rome, Italy",
+    foot_promoter:"Promoter: Fondazione Policlinico Univ. Campus Bio-Medico",
+    colophon:"Outreach page of Arianna Francesconi's PhD project. Not an official website of Policlinico Campus Bio-Medico. No patient personal data; progress figures are aggregate. © YEAR",
+    road_done:"done", road_current:"in progress",
+    cm_eyebrow:"Contact", cm_title:"Get in touch", cm_sub:"Tell us in a line who you are and what you propose. We'll reply by email.",
+    cm_name:"Name", cm_email:"Your email", cm_msg:"Message", cm_send:"Send",
+    cm_sending:"Sending…", cm_ok:"Thanks! We'll get back to you soon.", cm_err:"Something went wrong. Please try again shortly.",
+    cm_unset:"Form not active yet (set the endpoint, see README).",
+  }
+};
+
+let LANG="it", seenFigs=false, seenProg=false;
+function safeGet(k){ try{return localStorage.getItem(k);}catch(e){return null;} }
+function safeSet(k,v){ try{localStorage.setItem(k,v);}catch(e){} }
+function total(){ return CONFIG.classes.reduce((a,c)=>a+(c.n|0),0); }
+const reduceMo = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function setLang(lang){
+  LANG=lang; document.documentElement.lang=lang;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    let v=STR[lang][el.getAttribute('data-i18n')];
+    if(v===undefined) return;
+    v=v.replace('YEAR', new Date().getFullYear());
+    el.textContent=v;
+  });
+  document.querySelectorAll('.lang button').forEach(b=>b.classList.toggle('on', b.dataset.lang===lang));
+  render();
+  safeSet('adelai_lang',lang);
+}
+function applyThemeIcon(){
+  const dark=document.documentElement.getAttribute('data-theme')==='dark' ||
+    (!document.documentElement.getAttribute('data-theme') && matchMedia('(prefers-color-scheme: dark)').matches);
+  document.getElementById('themeIcon').innerHTML = dark
+    ? '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/>'
+    : '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l1.5 1.5M17.5 17.5 19 19M19 5l-1.5 1.5M6.5 17.5 5 19"/>';
+}
+function toggleTheme(){
+  const cur=document.documentElement.getAttribute('data-theme');
+  const isDark=cur==='dark' || (!cur && matchMedia('(prefers-color-scheme: dark)').matches);
+  document.documentElement.setAttribute('data-theme', isDark?'light':'dark');
+  safeSet('adelai_theme', isDark?'light':'dark'); applyThemeIcon();
+}
+
+function countUp(el,to){
+  if(reduceMo || to<=0){ el.textContent=to; return; }
+  const dur=950, t0=performance.now();
+  (function step(t){ const p=Math.min(1,(t-t0)/dur), e=1-Math.pow(1-p,3);
+    el.textContent=Math.round(e*to); if(p<1) requestAnimationFrame(step); else el.textContent=to; })(t0);
+}
+
+function render(){
+  const t=total(), target=CONFIG.target||150, pct=Math.round(t/target*100);
+  const maxN=Math.max(...CONFIG.classes.map(c=>c.n|0),1);
+  const nCls=CONFIG.classes.filter(c=>c.n>0).length;
+  const rev=CONFIG.revisits|0;
+  const d=new Date(CONFIG.lastUpdated+'T00:00:00');
+  const ds=isNaN(d)?CONFIG.lastUpdated:d.toLocaleDateString(LANG==='it'?'it-IT':'en-GB',{day:'numeric',month:'short',year:'numeric'});
+
+  document.getElementById('chipSample').textContent=t+'/'+target;
+  document.getElementById('chipRevis').textContent=rev;
+  document.getElementById('figCollected').dataset.to=t;
+  document.getElementById('figClasses').dataset.to=nCls;
+  document.querySelectorAll('#figs .count').forEach(c=>{ c.textContent = seenFigs ? c.dataset.to : '0'; });
+
+  const pTot=document.getElementById('pTotal'); pTot.dataset.to=t; pTot.textContent=seenProg?t:0;
+  const pP=document.getElementById('pPct'); pP.dataset.to=pct; pP.textContent=seenProg?pct:0;
+  document.getElementById('pTarget').textContent=target;
+  document.getElementById('pbarFill').style.width=(seenProg?pct:0)+'%';
+  document.getElementById('kfRevis').innerHTML=`<span class="count" data-to="${rev}">${seenProg?rev:0}</span>`;
+  document.getElementById('kfDate').textContent=ds;
+
+  document.getElementById('distRows').innerHTML=CONFIG.classes.map(c=>{
+    const p=Math.round(c.n/t*100);
+    return `<div class="drow"><div class="dk">${c[LANG]}</div>`+
+      `<div class="dbar"><i data-w="${Math.round(c.n/maxN*100)}" ${seenProg?`style="width:${Math.round(c.n/maxN*100)}%"`:''}></i></div>`+
+      `<div class="dn">${c.n}</div><div class="dp">${p}%</div></div>`;
+  }).join('');
+
+  document.getElementById('roadmap').innerHTML=CONFIG.timeline.map(it=>{
+    const cls=it.status==='current'?'cur':it.status==='done'?'done':'';
+    const tag=it.status==='current'?`<span class="rtag">${STR[LANG].road_current}</span>`
+             :it.status==='done'?`<span class="rtag">${STR[LANG].road_done}</span>`:'';
+    const c=it[LANG];
+    return `<li class="${cls}"><span class="rdot"></span><div class="ry">${it.year}</div><div class="rt">${c.t}${tag}</div><div class="rd">${c.d}</div></li>`;
+  }).join('');
+
+  document.getElementById('units').innerHTML=CONFIG.units.map(u=>{
+    const tag=u.kind==='clinic'?STR[LANG].unit_clinic_tag:STR[LANG].unit_ai_tag;
+    return `<div class="unit"><div class="ut">${tag}</div><h3>${u[LANG].name}</h3><p>${u[LANG].role}</p></div>`;
+  }).join('');
+
+  const pl=document.getElementById('pubList');
+  if(!CONFIG.publications.length){ pl.innerHTML=`<div class="pub-empty">${STR[LANG].pub_empty}</div>`; }
+  else { pl.innerHTML=CONFIG.publications.map((p,i)=>{
+    const ti=p.url?`<a href="${p.url}" target="_blank" rel="noopener" style="color:var(--blue);text-decoration:none">${p.title}</a>`:p.title;
+    return `<div class="pub"><div class="pi">[${i+1}]</div><div><div class="ptt">${ti}</div><div class="pmm">${p.authors} · ${p.venue}${p.year?' · '+p.year:''}</div></div></div>`;
+  }).join(''); }
+}
+
+/* contact modal */
+function openContact(){ const m=document.getElementById('contactModal'); m.hidden=false; setTimeout(()=>{const el=m.querySelector('input[name=name]'); if(el) el.focus();},50); }
+function closeContact(){ document.getElementById('contactModal').hidden=true; }
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeContact(); });
+function wireForm(){
+  const f=document.getElementById('contactForm'), s=document.getElementById('cmStatus');
+  f.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const ep=CONFIG.formEndpoint||'';
+    s.className='cm-status';
+    if(!ep || ep.indexOf('INCOLLA')>=0){ s.textContent=STR[LANG].cm_unset; s.classList.add('err'); return; }
+    s.textContent=STR[LANG].cm_sending;
+    try{
+      const r=await fetch(ep,{method:'POST',body:new FormData(f),headers:{'Accept':'application/json'}});
+      if(r.ok){ f.reset(); s.textContent=STR[LANG].cm_ok; s.classList.add('ok'); }
+      else { s.textContent=STR[LANG].cm_err; s.classList.add('err'); }
+    }catch(_){ s.textContent=STR[LANG].cm_err; s.classList.add('err'); }
+  });
+}
+
+function observeAnims(){
+  const io=new IntersectionObserver((es)=>{
+    es.forEach(e=>{
+      if(!e.isIntersecting) return;
+      const el=e.target; el.classList.add('in');
+      if(el.id==='figs' && !seenFigs){ seenFigs=true; el.querySelectorAll('.count').forEach(c=>countUp(c,+c.dataset.to||0)); }
+      if(el.id==='prog' && !seenProg){ seenProg=true;
+        el.querySelectorAll('.count').forEach(c=>countUp(c,+c.dataset.to||0));
+        el.querySelectorAll('.dbar i').forEach(i=>{ i.style.width=(i.dataset.w||0)+'%'; });
+        const pf=el.querySelector('#pbarFill'); if(pf){ pf.style.width=Math.round(total()/(CONFIG.target||150)*100)+'%'; }
+      }
+      io.unobserve(el);
+    });
+  },{threshold:.16});
+  document.querySelectorAll('.reveal, .stagger, #figs, #prog').forEach(el=>io.observe(el));
+}
+
+(function init(){
+  const st=safeGet('adelai_theme'); if(st) document.documentElement.setAttribute('data-theme', st);
+  applyThemeIcon();
+  setLang(safeGet('adelai_lang')||'it');
+  wireForm();
+  observeAnims();
+  document.querySelectorAll('#nav a').forEach(a=>a.addEventListener('click',()=>document.getElementById('nav').classList.remove('open')));
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyThemeIcon);
+})();
+</script>
+</body>
+</html>
