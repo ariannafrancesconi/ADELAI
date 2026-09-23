@@ -302,20 +302,27 @@ header.top{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--p
 .clin.recv{border-color:var(--blue);box-shadow:0 16px 44px -26px color-mix(in srgb,var(--blue) 70%,transparent)}
 .clin-h{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
 .clin .live{width:8px;height:8px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite}
-.clin-recv{margin-top:16px;display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size:.76rem;color:var(--ink-3);opacity:.35;transition:opacity .4s,color .4s}
-.clin.recv .clin-recv{opacity:1;color:var(--blue)}
-.weeks{display:flex;gap:8px;margin-top:16px}
-.weeks i{width:22px;height:8px;background:var(--track);border-radius:2px}
-.weeks i.now{background:var(--blue);transition:background .4s}
-.clin.recv .weeks i.now{background:var(--accent)}
-.feat{margin-top:18px;display:flex;flex-direction:column;gap:12px}
-.feat-row{display:flex;align-items:center;gap:12px}
-.feat-row .fl{font-family:var(--mono);font-size:.66rem;letter-spacing:.02em;color:var(--ink-3);width:118px;flex:0 0 auto}
-.spark{flex:1;height:20px}
-.spark polyline{fill:none;stroke:var(--blue);stroke-width:1.6;vector-effect:non-scaling-stroke}
-.clin-status{margin-top:18px;display:flex;align-items:center;gap:9px;font-size:.82rem;font-weight:500;color:var(--ink)}
-.clin-status .sdot{width:9px;height:9px;border-radius:50%;flex:0 0 auto;background:#2f9e5b}
-.clin-note{font-family:var(--mono);margin-top:10px;font-size:.66rem;color:var(--ink-3);line-height:1.55}
+.clin-sub{font-family:var(--mono);font-size:.64rem;color:var(--ink-3);margin-top:8px;line-height:1.5}
+.clin-recv{margin-top:16px;display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size:.76rem;color:var(--blue);max-height:0;opacity:0;overflow:hidden;transition:max-height .4s,opacity .4s,margin .4s}
+.clin.recv .clin-recv{max-height:28px;opacity:1;margin-top:16px}
+.feat{margin-top:18px;display:flex;flex-direction:column;gap:14px}
+.feat-row{display:flex;align-items:center;gap:10px}
+.fglyph{width:20px;height:20px;flex:0 0 auto;color:var(--ink-3);display:grid;place-items:center}
+.fglyph svg{width:18px;height:18px}
+.feat-row .fl{font-family:var(--mono);font-size:.64rem;letter-spacing:.01em;color:var(--ink-3);width:96px;flex:0 0 auto}
+.spark{flex:1;height:24px}
+.spark .sp-base{fill:none;stroke:var(--blue);stroke-width:1.6;vector-effect:non-scaling-stroke;opacity:.85}
+.spark .sp-new{opacity:0;transition:opacity .5s}
+.spark .sp-new polyline{fill:none;stroke:var(--accent);stroke-width:2;vector-effect:non-scaling-stroke}
+.spark .sp-new circle{fill:var(--accent)}
+.clin.recv .spark .sp-new{opacity:1}
+.clin.recv .spark .sp-new circle{animation:blink 1.4s infinite}
+@keyframes blink{50%{opacity:.35}}
+.clin-alert{display:flex;gap:11px;align-items:flex-start;margin-top:18px;padding:0 14px;border:1px solid transparent;background:color-mix(in srgb,var(--accent) 13%,transparent);max-height:0;opacity:0;overflow:hidden;transition:max-height .5s cubic-bezier(.2,.7,.2,1),opacity .4s,padding .5s,border-color .4s}
+.clin.recv .clin-alert{max-height:150px;opacity:1;padding:14px;border-color:color-mix(in srgb,var(--accent) 45%,var(--line-2))}
+.clin-alert svg{width:20px;height:20px;flex:0 0 auto;color:var(--accent);margin-top:1px}
+.clin-alert b{display:block;font-size:.86rem;color:var(--ink)}
+.clin-alert span{display:block;font-size:.8rem;color:var(--ink-2);margin-top:3px}
 .hiw-rail{list-style:none;margin:36px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line-2)}
 .hiw-rail li{position:relative;padding:16px 16px 0 0;border-right:1px solid var(--line);display:flex;gap:10px;align-items:flex-start;color:var(--ink-3);transition:color .3s;font-size:.86rem}
 .hiw-rail li:last-child{border-right:0}
@@ -327,7 +334,7 @@ header.top{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--p
 .hiw-cap{font-family:var(--mono);margin-top:20px;font-size:.7rem;color:var(--ink-3)}
 .hiw-cap:before{content:"* "}
 @media (prefers-reduced-motion: reduce){
-  .bell,.mic .ring,.wave i,.clin .live,.check.play path,.w-field .caret{animation:none!important}
+  .bell,.mic .ring,.wave i,.clin .live,.check.play path,.w-field .caret,.clin.recv .sp-new circle{animation:none!important}
 }
 @media (max-width:920px){
   .hiw{grid-template-columns:1fr;gap:24px}
@@ -595,14 +602,24 @@ footer{border-top:1px solid var(--line-2);padding:44px 0 60px}
 
         <div class="clin" id="clin">
           <div class="clin-h"><span data-i18n="hiw_clin_title">Cruscotto del clinico</span><span class="live"></span></div>
-          <div class="clin-recv"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="hiw_clin_recv">task ricevuto</span></div>
-          <div class="weeks"><i></i><i></i><i></i><i class="now"></i></div>
+          <div class="clin-sub" data-i18n="hiw_clin_sub">Confronto automatico con le settimane precedenti</div>
+          <div class="clin-recv"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="hiw_clin_recv">nuovo task ricevuto</span></div>
           <div class="feat">
-            <div class="feat-row"><span class="fl" data-i18n="hiw_f1">Fluenza verbale</span><svg class="spark" viewBox="0 0 80 20" preserveAspectRatio="none"><polyline points="0,12 16,10 32,11 48,9 64,10 80,9"/></svg></div>
-            <div class="feat-row"><span class="fl" data-i18n="hiw_f2">Ritmo di battitura</span><svg class="spark" viewBox="0 0 80 20" preserveAspectRatio="none"><polyline points="0,10 16,11 32,9 48,11 64,10 80,11"/></svg></div>
+            <div class="feat-row">
+              <span class="fglyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 11.5v1M8 8v8M12 5v14M16 9v6M20 11v2"/></svg></span>
+              <span class="fl" data-i18n="hiw_f1">Fluenza verbale</span>
+              <svg class="spark" viewBox="0 0 90 26" preserveAspectRatio="none"><polyline class="sp-base" points="0,10 18,9 36,11 54,9 72,10"/><g class="sp-new"><polyline points="72,10 90,20"/><circle cx="90" cy="20" r="2.6"/></g></svg>
+            </div>
+            <div class="feat-row">
+              <span class="fglyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="10" rx="2"/><path d="M7 11h0M11 11h0M15 11h0M8 14h8"/></svg></span>
+              <span class="fl" data-i18n="hiw_f2">Ritmo di battitura</span>
+              <svg class="spark" viewBox="0 0 90 26" preserveAspectRatio="none"><polyline class="sp-base" points="0,14 18,13 36,15 54,13 72,14"/><g class="sp-new"><polyline points="72,14 90,4"/><circle cx="90" cy="4" r="2.6"/></g></svg>
+            </div>
           </div>
-          <div class="clin-status"><span class="sdot"></span><span data-i18n="hiw_status_ok">Nessuna variazione preoccupante</span></div>
-          <div class="clin-note" data-i18n="hiw_clin_note">il modello confronta i dati con le settimane precedenti.</div>
+          <div class="clin-alert">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2.5 20h19L12 3Z"/><path d="M12 10v4M12 17.5h.01"/></svg>
+            <div><b data-i18n="hiw_alert_t">Variazione rilevata</b><span data-i18n="hiw_alert_d">Richiamare il paziente per una visita di controllo.</span></div>
+          </div>
         </div>
       </div>
 
@@ -852,10 +869,11 @@ const STR = {
     hiw_v_prompt:"Descrivi cosa vedi", hiw_v_rec:"registrazione…",
     hiw_w_prompt:"Ricopia questa frase", hiw_w_sentence:"Il sole splende sul giardino.",
     hiw_done:"Task completato", hiw_done_sub:"grazie, a settimana prossima",
-    hiw_clin_title:"Cruscotto del clinico", hiw_clin_recv:"task ricevuto",
+    hiw_clin_title:"Cruscotto del clinico", hiw_clin_recv:"nuovo task ricevuto",
+    hiw_clin_sub:"Confronto automatico con le settimane precedenti",
     hiw_f1:"Fluenza verbale", hiw_f2:"Ritmo di battitura",
-    hiw_status_ok:"Nessuna variazione preoccupante",
-    hiw_clin_note:"il modello confronta i dati con le settimane precedenti.",
+    hiw_alert_t:"Variazione rilevata",
+    hiw_alert_d:"Richiamare il paziente per una visita di controllo.",
     hiw_caption:"Scenario illustrativo. Il monitoraggio automatico è l'obiettivo di ricerca dello studio.",
     prog_title:"A che punto siamo",
     prog_lead:"Aggiorniamo periodicamente la raccolta dati e le tappe dello studio, per raccontare quasi in tempo reale il lavoro in corso.",
@@ -925,10 +943,11 @@ const STR = {
     hiw_v_prompt:"Describe what you see", hiw_v_rec:"recording…",
     hiw_w_prompt:"Copy this sentence", hiw_w_sentence:"The sun shines over the garden.",
     hiw_done:"Task completed", hiw_done_sub:"thanks, see you next week",
-    hiw_clin_title:"Clinician dashboard", hiw_clin_recv:"task received",
+    hiw_clin_title:"Clinician dashboard", hiw_clin_recv:"new task received",
+    hiw_clin_sub:"Automatic comparison with previous weeks",
     hiw_f1:"Speech fluency", hiw_f2:"Typing rhythm",
-    hiw_status_ok:"No concerning change",
-    hiw_clin_note:"the model compares the data with previous weeks.",
+    hiw_alert_t:"Change detected",
+    hiw_alert_d:"Recall the patient for a check-up.",
     hiw_caption:"Illustrative scenario. Automated monitoring is the study's research goal.",
     prog_title:"Where we are",
     prog_lead:"We periodically update data collection and study milestones, to show the work in progress in near real time.",
@@ -1068,7 +1087,7 @@ function hiwPlay(){ if(hiwOn) return; hiwOn=true; hiwSet(0); if(!reduceMo) hiwTi
 function hiwPause(){ hiwOn=false; clearInterval(hiwTimer); clearInterval(hiwTypeIv); hiwTypeIv=null; }
 function hiwInit(){
   const hiw=document.getElementById('hiw'); if(!hiw) return;
-  if(reduceMo){ hiwSet(0); return; }
+  if(reduceMo){ hiwSet(1); var c=document.getElementById('clin'); if(c) c.classList.add('recv'); return; }
   new IntersectionObserver((es)=>es.forEach(e=>{ e.isIntersecting?hiwPlay():hiwPause(); }),{threshold:.35}).observe(hiw);
 }
 
