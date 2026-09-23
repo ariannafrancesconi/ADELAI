@@ -256,6 +256,89 @@ header.top{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--p
 .btn-inv{background:var(--paper);color:var(--ink);border-color:var(--paper)}
 .btn-inv:hover{background:var(--blue);color:#fff;border-color:var(--blue)}
 
+/* how it works */
+.hiw{display:grid;grid-template-columns:230px 44px 1fr;gap:26px;align-items:center;margin-top:36px}
+.hiw-flow{display:grid;place-items:center;color:var(--ink-3)}
+.hiw-flow svg{width:36px;height:22px}
+.phone{width:230px;height:456px;border:2px solid var(--ink);border-radius:30px;background:var(--paper-2);position:relative;overflow:hidden;box-shadow:0 26px 54px -26px color-mix(in srgb,var(--blue) 60%,transparent);justify-self:center}
+.phone .notch{position:absolute;top:11px;left:50%;transform:translateX(-50%);width:66px;height:6px;border-radius:6px;background:var(--line-2);z-index:6}
+.screen{position:absolute;inset:0;padding:34px 20px 24px;display:flex;flex-direction:column;align-items:center;opacity:0;transition:opacity .5s;color:var(--ink);pointer-events:none}
+.screen.on{opacity:1}
+.sc-time{font-size:.78rem;color:var(--ink-3);align-self:flex-end}
+.sc-h{font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin-bottom:16px;text-align:center}
+.sc-cap{font-family:var(--mono);font-size:.7rem;color:var(--accent);margin-top:14px;text-transform:uppercase;letter-spacing:.08em}
+.notif{margin-top:118px;width:100%;border:1px solid var(--line-2);background:var(--paper);padding:12px;display:flex;gap:11px;align-items:center;border-radius:12px;box-shadow:0 8px 20px -10px rgba(0,0,0,.25)}
+.notif-ic{width:34px;height:34px;flex:0 0 auto;display:grid;place-items:center;background:var(--blue);color:#fff;border-radius:9px}
+.notif-ic svg{width:19px;height:19px}
+.bell{transform-origin:top center;animation:bell 2.4s ease-in-out infinite}
+@keyframes bell{0%,55%,100%{transform:rotate(0)}62%{transform:rotate(13deg)}72%{transform:rotate(-10deg)}82%{transform:rotate(6deg)}}
+.notif-tx{display:flex;flex-direction:column;line-height:1.3;min-width:0}
+.notif-tx b{font-size:.82rem}
+.notif-tx span{font-size:.78rem;color:var(--ink-2)}
+.notif-sub{font-family:var(--mono);margin-top:12px;font-size:.68rem;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em}
+.stim{width:100%;border:1px solid var(--line-2);border-radius:10px;padding:14px;color:var(--blue);background:var(--paper)}
+.stim svg{width:100%;height:auto;display:block}
+.mic-wrap{margin-top:auto;display:flex;flex-direction:column;align-items:center;gap:14px}
+.mic{position:relative;width:54px;height:54px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center}
+.mic svg{width:22px;height:22px;position:relative;z-index:2}
+.mic .ring{position:absolute;inset:0;border-radius:50%;border:2px solid var(--accent);animation:mring 1.8s ease-out infinite}
+@keyframes mring{0%{transform:scale(1);opacity:.7}100%{transform:scale(2);opacity:0}}
+.wave{display:flex;align-items:center;gap:3px;height:26px}
+.wave i{width:3px;height:8px;background:var(--blue);border-radius:2px;animation:wv 1s ease-in-out infinite}
+.wave i:nth-child(2){animation-delay:.1s}.wave i:nth-child(3){animation-delay:.2s}.wave i:nth-child(4){animation-delay:.3s}.wave i:nth-child(5){animation-delay:.15s}.wave i:nth-child(6){animation-delay:.25s}.wave i:nth-child(7){animation-delay:.05s}
+@keyframes wv{0%,100%{height:7px}50%{height:23px}}
+.w-model{width:100%;font-size:.9rem;color:var(--ink-2);border-left:2px solid var(--blue);padding:2px 0 2px 10px;margin-bottom:16px}
+.w-field{width:100%;flex:1;border:1px solid var(--line-2);border-radius:10px;padding:12px;background:var(--paper);font-size:.92rem;color:var(--ink);line-height:1.5}
+.w-field .caret{display:inline-block;width:2px;height:1em;background:var(--accent);vertical-align:-2px;margin-left:1px;animation:caret 1s step-end infinite}
+@keyframes caret{50%{opacity:0}}
+.check{width:66px;height:66px;margin:116px auto 0;color:var(--blue)}
+.check circle{fill:none;stroke:currentColor;stroke-width:3;opacity:.3}
+.check path{fill:none;stroke:currentColor;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:44;stroke-dashoffset:44}
+.check.play path{animation:draw .55s .1s ease forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.done-t{font-size:1.1rem;font-weight:600;margin-top:20px}
+.done-s{font-family:var(--mono);font-size:.7rem;color:var(--ink-3);margin-top:6px;text-transform:uppercase;letter-spacing:.06em}
+.clin{border:1px solid var(--line-2);background:color-mix(in srgb,var(--paper) 55%,transparent);padding:22px;transition:border-color .4s,box-shadow .4s;align-self:stretch}
+.clin.recv{border-color:var(--blue);box-shadow:0 16px 44px -26px color-mix(in srgb,var(--blue) 70%,transparent)}
+.clin-h{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.clin .live{width:8px;height:8px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite}
+.clin-recv{margin-top:16px;display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size:.76rem;color:var(--ink-3);opacity:.35;transition:opacity .4s,color .4s}
+.clin.recv .clin-recv{opacity:1;color:var(--blue)}
+.weeks{display:flex;gap:8px;margin-top:16px}
+.weeks i{width:22px;height:8px;background:var(--track);border-radius:2px}
+.weeks i.now{background:var(--blue);transition:background .4s}
+.clin.recv .weeks i.now{background:var(--accent)}
+.feat{margin-top:18px;display:flex;flex-direction:column;gap:12px}
+.feat-row{display:flex;align-items:center;gap:12px}
+.feat-row .fl{font-family:var(--mono);font-size:.66rem;letter-spacing:.02em;color:var(--ink-3);width:118px;flex:0 0 auto}
+.spark{flex:1;height:20px}
+.spark polyline{fill:none;stroke:var(--blue);stroke-width:1.6;vector-effect:non-scaling-stroke}
+.clin-status{margin-top:18px;display:flex;align-items:center;gap:9px;font-size:.82rem;font-weight:500;color:var(--ink)}
+.clin-status .sdot{width:9px;height:9px;border-radius:50%;flex:0 0 auto;background:#2f9e5b}
+.clin-note{font-family:var(--mono);margin-top:10px;font-size:.66rem;color:var(--ink-3);line-height:1.55}
+.hiw-rail{list-style:none;margin:36px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line-2)}
+.hiw-rail li{position:relative;padding:16px 16px 0 0;border-right:1px solid var(--line);display:flex;gap:10px;align-items:flex-start;color:var(--ink-3);transition:color .3s;font-size:.86rem}
+.hiw-rail li:last-child{border-right:0}
+.hiw-rail li:before{content:"";position:absolute;top:-1px;left:0;right:12px;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.hiw-rail li.cur:before{transform:scaleX(1)}
+.hiw-rail li.cur{color:var(--ink)}
+.hiw-rail .ri{font-family:var(--mono);color:var(--ink-3);font-size:.72rem;flex:0 0 auto}
+.hiw-rail li.cur .ri{color:var(--accent)}
+.hiw-cap{font-family:var(--mono);margin-top:20px;font-size:.7rem;color:var(--ink-3)}
+.hiw-cap:before{content:"* "}
+@media (prefers-reduced-motion: reduce){
+  .bell,.mic .ring,.wave i,.clin .live,.check.play path,.w-field .caret{animation:none!important}
+}
+@media (max-width:920px){
+  .hiw{grid-template-columns:1fr;gap:24px}
+  .hiw-flow{display:none}
+  .phone{justify-self:start}
+  .hiw-rail{grid-template-columns:1fr 1fr}
+  .hiw-rail li{border-right:0;border-bottom:1px solid var(--line);padding:16px 0 16px 0}
+  .hiw-rail li:before{right:0}
+}
+@media (max-width:560px){ .hiw-rail{grid-template-columns:1fr} .feat-row .fl{width:104px} }
+
 /* footer */
 footer{border-top:1px solid var(--line-2);padding:44px 0 60px}
 .foot-cols{display:grid;grid-template-columns:2fr 1fr 1fr;gap:32px}
@@ -330,6 +413,7 @@ footer{border-top:1px solid var(--line-2);padding:44px 0 60px}
       <a href="#top" data-i18n="nav_home">Home</a>
       <a href="#studio" data-i18n="nav_study">Lo studio</a>
       <a href="#obiettivi" data-i18n="nav_obj">Obiettivi</a>
+      <a href="#come-funziona" data-i18n="nav_hiw">Come funziona</a>
       <a href="#avanzamento" data-i18n="nav_prog">Avanzamento</a>
       <a href="#team" data-i18n="nav_team">Team</a>
       <a href="#collabora" data-i18n="nav_collab">Collabora</a>
@@ -467,10 +551,76 @@ footer{border-top:1px solid var(--line-2);padding:44px 0 60px}
   </div>
 </section>
 
-<!-- ======================= 04 · AVANZAMENTO ======================= -->
+<!-- ======================= 04 · COME FUNZIONA ======================= -->
+<section class="sec" id="come-funziona">
+  <div class="wrap sec-in">
+    <div class="sec-ix reveal"><span class="n">04</span><span class="l" data-i18n="ix_hiw">Come funziona</span></div>
+    <div class="sec-body">
+      <h2 class="h-lead reveal" data-i18n="hiw_title">Come funziona</h2>
+      <p class="p-lead reveal" data-i18n="hiw_lead">Dal promemoria settimanale sul telefono del paziente fino al controllo del clinico, in quattro passaggi.</p>
+
+      <div class="hiw reveal" id="hiw" data-step="0">
+        <div class="phone">
+          <span class="notch"></span>
+          <div class="screen on" data-s="0">
+            <div class="sc-time mono">9:00</div>
+            <div class="notif">
+              <div class="notif-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="bell"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg></div>
+              <div class="notif-tx"><b>ADELAI</b><span data-i18n="hiw_n_title">È ora del task settimanale</span></div>
+            </div>
+            <div class="notif-sub" data-i18n="hiw_n_sub">tocca per iniziare</div>
+          </div>
+          <div class="screen" data-s="1">
+            <div class="sc-h" data-i18n="hiw_v_prompt">Descrivi cosa vedi</div>
+            <div class="stim"><svg viewBox="0 0 120 82" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="96" cy="20" r="9"/><path d="M8 66h104"/><path d="M26 66V42l20-15 20 15v24"/><path d="M38 66V52h16v14"/><path d="M80 66V48l11-8 11 8v18"/></svg></div>
+            <div class="mic-wrap">
+              <div class="mic"><span class="ring"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M6 11a6 6 0 0 0 12 0M12 17v3"/></svg></div>
+              <div class="wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            </div>
+            <div class="sc-cap" data-i18n="hiw_v_rec">registrazione…</div>
+          </div>
+          <div class="screen" data-s="2">
+            <div class="sc-h" data-i18n="hiw_w_prompt">Ricopia questa frase</div>
+            <div class="w-model" data-i18n="hiw_w_sentence">Il sole splende sul giardino.</div>
+            <div class="w-field"><span id="hiwType"></span><span class="caret"></span></div>
+          </div>
+          <div class="screen" data-s="3">
+            <svg class="check" id="hiwCheck" viewBox="0 0 52 52"><circle cx="26" cy="26" r="23"/><path d="M15 27l8 8 15-16"/></svg>
+            <div class="done-t" data-i18n="hiw_done">Task completato</div>
+            <div class="done-s" data-i18n="hiw_done_sub">grazie, a settimana prossima</div>
+          </div>
+        </div>
+
+        <div class="hiw-flow" aria-hidden="true"><svg viewBox="0 0 40 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h32M26 5l8 7-8 7"/></svg></div>
+
+        <div class="clin" id="clin">
+          <div class="clin-h"><span data-i18n="hiw_clin_title">Cruscotto del clinico</span><span class="live"></span></div>
+          <div class="clin-recv"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="hiw_clin_recv">task ricevuto</span></div>
+          <div class="weeks"><i></i><i></i><i></i><i class="now"></i></div>
+          <div class="feat">
+            <div class="feat-row"><span class="fl" data-i18n="hiw_f1">Fluenza verbale</span><svg class="spark" viewBox="0 0 80 20" preserveAspectRatio="none"><polyline points="0,12 16,10 32,11 48,9 64,10 80,9"/></svg></div>
+            <div class="feat-row"><span class="fl" data-i18n="hiw_f2">Ritmo di battitura</span><svg class="spark" viewBox="0 0 80 20" preserveAspectRatio="none"><polyline points="0,10 16,11 32,9 48,11 64,10 80,11"/></svg></div>
+          </div>
+          <div class="clin-status"><span class="sdot"></span><span data-i18n="hiw_status_ok">Nessuna variazione preoccupante</span></div>
+          <div class="clin-note" data-i18n="hiw_clin_note">il modello confronta i dati con le settimane precedenti.</div>
+        </div>
+      </div>
+
+      <ol class="hiw-rail" id="hiwRail">
+        <li class="cur"><span class="ri">01</span><span data-i18n="hiw_s1">Promemoria settimanale</span></li>
+        <li><span class="ri">02</span><span data-i18n="hiw_s2">Voce: descrivi l'immagine</span></li>
+        <li><span class="ri">03</span><span data-i18n="hiw_s3">Scrittura: ricopia la frase</span></li>
+        <li><span class="ri">04</span><span data-i18n="hiw_s4">Il clinico controlla</span></li>
+      </ol>
+      <p class="hiw-cap" data-i18n="hiw_caption">Scenario illustrativo. Il monitoraggio automatico è l'obiettivo di ricerca dello studio.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 05 · AVANZAMENTO ======================= -->
 <section class="sec" id="avanzamento">
   <div class="wrap sec-in">
-    <div class="sec-ix reveal"><span class="n">04</span><span class="l" data-i18n="ix_prog">Avanzamento</span></div>
+    <div class="sec-ix reveal"><span class="n">05</span><span class="l" data-i18n="ix_prog">Avanzamento</span></div>
     <div class="sec-body">
       <h2 class="h-lead reveal" data-i18n="prog_title">A che punto siamo</h2>
       <p class="p-lead reveal" data-i18n="prog_lead">Aggiorniamo periodicamente la raccolta dati e le tappe dello studio, per raccontare quasi in tempo reale il lavoro in corso.</p>
@@ -505,7 +655,7 @@ footer{border-top:1px solid var(--line-2);padding:44px 0 60px}
 <!-- ======================= 05 · TEAM ======================= -->
 <section class="sec" id="team">
   <div class="wrap sec-in">
-    <div class="sec-ix reveal"><span class="n">05</span><span class="l" data-i18n="ix_team">Team</span></div>
+    <div class="sec-ix reveal"><span class="n">06</span><span class="l" data-i18n="ix_team">Team</span></div>
     <div class="sec-body">
       <h2 class="h-lead reveal" data-i18n="team_title">Chi c'è dietro ADELAI</h2>
       <p class="p-lead reveal" data-i18n="team_lead">ADELAI nasce dalla collaborazione tra due unità di ricerca del Campus Bio-Medico di Roma: la parte clinica e la parte di intelligenza artificiale.</p>
@@ -517,7 +667,7 @@ footer{border-top:1px solid var(--line-2);padding:44px 0 60px}
 <!-- ======================= 06 · PUBBLICAZIONI ======================= -->
 <section class="sec" id="pubblicazioni">
   <div class="wrap sec-in">
-    <div class="sec-ix reveal"><span class="n">06</span><span class="l" data-i18n="ix_pub">Output</span></div>
+    <div class="sec-ix reveal"><span class="n">07</span><span class="l" data-i18n="ix_pub">Output</span></div>
     <div class="sec-body">
       <h2 class="h-lead reveal" data-i18n="pub_title">Pubblicazioni &amp; risultati</h2>
       <p class="p-lead reveal" data-i18n="pub_lead">I risultati dello studio saranno condivisi con la comunità scientifica tramite pubblicazioni e convegni. Questa sezione verrà aggiornata man mano che escono nuovi lavori.</p>
@@ -529,7 +679,7 @@ footer{border-top:1px solid var(--line-2);padding:44px 0 60px}
 <!-- ======================= 07 · COLLABORA ======================= -->
 <section class="sec" id="collabora">
   <div class="wrap sec-in">
-    <div class="sec-ix reveal"><span class="n">07</span><span class="l" data-i18n="ix_collab">Collabora</span></div>
+    <div class="sec-ix reveal"><span class="n">08</span><span class="l" data-i18n="ix_collab">Collabora</span></div>
     <div class="sec-body">
       <div class="collab reveal">
         <div class="ce" data-i18n="collab_eyebrow">Collaborazioni / partner</div>
@@ -695,6 +845,18 @@ const STR = {
     des_meth_p:"Machine learning, deep learning (LSTM, GRU, Transformer, CNN) e foundation models, con validazione Leave-One-User-Out. Modelli a finalità esclusivamente di ricerca, senza azione clinica diretta sul paziente.",
     des_priv_t:"Privacy & etica",
     des_priv_p:"Studio condotto secondo la Dichiarazione di Helsinki e le norme di buona pratica clinica. Dati anonimizzati, conservati in sicurezza e trattati in conformità al GDPR; nessun dato inviato o elaborato su server esterni.",
+    nav_hiw:"Come funziona", ix_hiw:"Come funziona", hiw_title:"Come funziona",
+    hiw_lead:"Dal promemoria settimanale sul telefono del paziente fino al controllo del clinico, in quattro passaggi.",
+    hiw_s1:"Promemoria settimanale", hiw_s2:"Voce: descrivi l'immagine", hiw_s3:"Scrittura: ricopia la frase", hiw_s4:"Il clinico controlla",
+    hiw_n_title:"È ora del task settimanale", hiw_n_sub:"tocca per iniziare",
+    hiw_v_prompt:"Descrivi cosa vedi", hiw_v_rec:"registrazione…",
+    hiw_w_prompt:"Ricopia questa frase", hiw_w_sentence:"Il sole splende sul giardino.",
+    hiw_done:"Task completato", hiw_done_sub:"grazie, a settimana prossima",
+    hiw_clin_title:"Cruscotto del clinico", hiw_clin_recv:"task ricevuto",
+    hiw_f1:"Fluenza verbale", hiw_f2:"Ritmo di battitura",
+    hiw_status_ok:"Nessuna variazione preoccupante",
+    hiw_clin_note:"il modello confronta i dati con le settimane precedenti.",
+    hiw_caption:"Scenario illustrativo. Il monitoraggio automatico è l'obiettivo di ricerca dello studio.",
     prog_title:"A che punto siamo",
     prog_lead:"Aggiorniamo periodicamente la raccolta dati e le tappe dello studio, per raccontare quasi in tempo reale il lavoro in corso.",
     kf_collected:"Pazienti raccolti", kf_pct:"Completamento", kf_revis:"Pazienti riacquisiti a 6 mesi", kf_updated:"Ultimo aggiornamento",
@@ -756,6 +918,18 @@ const STR = {
     des_meth_p:"Machine learning, deep learning (LSTM, GRU, Transformers, CNN) and foundation models, with Leave-One-User-Out validation. Models are strictly for research, with no direct clinical action on patients.",
     des_priv_t:"Privacy & ethics",
     des_priv_p:"Conducted according to the Declaration of Helsinki and good clinical practice. Data are anonymized, securely stored and processed in compliance with GDPR; no data is sent to or processed on external servers.",
+    nav_hiw:"How it works", ix_hiw:"How it works", hiw_title:"How it works",
+    hiw_lead:"From the weekly reminder on the patient's phone to the clinician's review, in four steps.",
+    hiw_s1:"Weekly reminder", hiw_s2:"Voice: describe the image", hiw_s3:"Writing: copy the sentence", hiw_s4:"The clinician reviews",
+    hiw_n_title:"Time for your weekly task", hiw_n_sub:"tap to start",
+    hiw_v_prompt:"Describe what you see", hiw_v_rec:"recording…",
+    hiw_w_prompt:"Copy this sentence", hiw_w_sentence:"The sun shines over the garden.",
+    hiw_done:"Task completed", hiw_done_sub:"thanks, see you next week",
+    hiw_clin_title:"Clinician dashboard", hiw_clin_recv:"task received",
+    hiw_f1:"Speech fluency", hiw_f2:"Typing rhythm",
+    hiw_status_ok:"No concerning change",
+    hiw_clin_note:"the model compares the data with previous weeks.",
+    hiw_caption:"Illustrative scenario. Automated monitoring is the study's research goal.",
     prog_title:"Where we are",
     prog_lead:"We periodically update data collection and study milestones, to show the work in progress in near real time.",
     kf_collected:"Patients collected", kf_pct:"Completion", kf_revis:"Patients re-acquired at 6 months", kf_updated:"Last updated",
@@ -871,6 +1045,33 @@ function render(){
   }).join(''); }
 }
 
+/* how it works animation */
+let hiwStep=0, hiwTimer=null, hiwTypeIv=null, hiwOn=false;
+function hiwSet(n){
+  const hiw=document.getElementById('hiw'); if(!hiw) return;
+  hiwStep=n; hiw.dataset.step=n;
+  hiw.querySelectorAll('.screen').forEach((s,i)=>s.classList.toggle('on', i===n));
+  document.querySelectorAll('#hiwRail li').forEach((r,i)=>r.classList.toggle('cur', i===n));
+  const clin=document.getElementById('clin'); if(clin) clin.classList.toggle('recv', n===3);
+  const ck=document.getElementById('hiwCheck');
+  if(n===3 && ck){ ck.classList.remove('play'); void ck.offsetWidth; ck.classList.add('play'); }
+  if(n===2) hiwType(); else if(hiwTypeIv){ clearInterval(hiwTypeIv); hiwTypeIv=null; }
+}
+function hiwType(){
+  clearInterval(hiwTypeIv);
+  const el=document.getElementById('hiwType'); if(!el) return;
+  const full=STR[LANG].hiw_w_sentence||''; let i=0; el.textContent='';
+  if(reduceMo){ el.textContent=full; return; }
+  hiwTypeIv=setInterval(()=>{ el.textContent=full.slice(0,++i); if(i>=full.length){ clearInterval(hiwTypeIv); hiwTypeIv=null; } }, 55);
+}
+function hiwPlay(){ if(hiwOn) return; hiwOn=true; hiwSet(0); if(!reduceMo) hiwTimer=setInterval(()=>hiwSet((hiwStep+1)%4), 3000); }
+function hiwPause(){ hiwOn=false; clearInterval(hiwTimer); clearInterval(hiwTypeIv); hiwTypeIv=null; }
+function hiwInit(){
+  const hiw=document.getElementById('hiw'); if(!hiw) return;
+  if(reduceMo){ hiwSet(0); return; }
+  new IntersectionObserver((es)=>es.forEach(e=>{ e.isIntersecting?hiwPlay():hiwPause(); }),{threshold:.35}).observe(hiw);
+}
+
 /* contact modal */
 function openContact(){ const m=document.getElementById('contactModal'); m.hidden=false; setTimeout(()=>{const el=m.querySelector('input[name=name]'); if(el) el.focus();},50); }
 function closeContact(){ document.getElementById('contactModal').hidden=true; }
@@ -914,6 +1115,7 @@ function observeAnims(){
   setLang(safeGet('adelai_lang')||'it');
   wireForm();
   observeAnims();
+  hiwInit();
   document.querySelectorAll('#nav a').forEach(a=>a.addEventListener('click',()=>document.getElementById('nav').classList.remove('open')));
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyThemeIcon);
 })();
